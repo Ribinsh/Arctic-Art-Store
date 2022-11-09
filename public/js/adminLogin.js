@@ -1,0 +1,3 @@
+const validarLogin = () => {
+    alert('Teste');
+  }

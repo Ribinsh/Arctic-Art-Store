@@ -1,0 +1,122 @@
+
+ <%- include ('header.ejs') %>
+
+  <%- include ('nav.ejs') %>
+
+
+
+ <div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+      
+      <div class="row">
+        
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Add new product</h5>
+              
+            </div>
+            <div class="card-body"  style="height:800px ;">
+              <form  action="/admin/newProduct" method="post" enctype="multipart/form-data" >
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-fullname">Category</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span id="basic-icon-default-fullname2" class="input-group-text"
+                      ><i class="bx bx-user"></i
+                    ></span> -->
+                    <select  class="form-control" placeholder="category" name="category" id="basic-icon-default-fullname">
+                        <option value="">Choose category</option>
+                        <% category.forEach(function(x){ %>
+                        <option value="<%= x.categoryName %>"><%= x.categoryName %></option>
+                        <% }) %>
+                    </select>
+                    <!-- <input
+                      type=""
+                      class="form-control"
+                      id="basic-icon-default-fullname"
+                      placeholder="Category"
+                      aria-label="John Doe"
+                      aria-describedby="basic-icon-default-fullname2"
+                    /> -->
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-company">Product Name</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span id="basic-icon-default-company2" class="input-group-text"
+                      ><i class="bx bx-buildings"></i
+                    ></span> -->
+                    <input
+                      type="text"
+                      id="basic-icon-default-company"
+                      name="productName"
+                      class="form-control"
+                      placeholder="name"
+                      aria-label="ACME Inc."
+                      aria-describedby="basic-icon-default-company2"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-email">Description</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span class="input-group-text"><i class="bx bx-envelope"></i></span> -->
+                    <input
+                      type="text"
+                      id="basic-icon-default-email"
+                      name="description"
+                      class="form-control"
+                      placeholder="about product"
+                      
+                      aria-describedby="basic-icon-default-email2"
+                    />
+                   
+                  </div>
+                  
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-phone">Price</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span id="basic-icon-default-phone2" class="input-group-text"
+                      ><i class="bx bx-phone"></i
+                    ></span> -->
+                    <input
+                      type="number"
+                      id="basic-icon-default-phone"
+                      name="price"
+                      class="form-control phone-mask"
+                      placeholder="Price of product"
+                      aria-label="658 799 8941"
+                      aria-describedby="basic-icon-default-phone2"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-message" >image</label>
+                  <div class="input-group input-group-merge">
+                    <input type="file" class="form-control" name="image" id="fileToUpload">
+                    
+                    <!-- <span id="basic-icon-default-message2" class="input-group-text"
+                      ><i class="bx bx-comment"></i
+                    ></span> -->
+                    <!-- <textarea
+                      
+                      id="basic-icon-default-message"
+                      class="form-control"
+                      placeholder="Hi, Do you have a moment to talk Joe?"
+                      aria-label="Hi, Do you have a moment to talk Joe?"
+                      aria-describedby="basic-icon-default-message2"
+                    ></textarea> -->
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-success">Add</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include ('footer.ejs') %>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>Vertical Layouts - Forms | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/public/adminAssets/img/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/public/adminAssets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/public/adminAssets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/public/adminAssets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/public/adminAssets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/public/adminAssets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="/public/adminAssets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/public/adminAssets/js/config.js"></script>
+  </head>
+
+
+
+
+
+
+ <div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+      
+      <div class="row">
+        
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Add new product</h5>
+              
+            </div>
+            <div class="card-body"  style="height:800px ;">
+                
+              <form  action="/admin/updateProduct/<%= product._id %>" method="post" enctype="multipart/form-data" >
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-fullname">Category</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span id="basic-icon-default-fullname2" class="input-group-text"
+                      ><i class="bx bx-user"></i
+                    ></span> -->
+                    <select  class="form-control" placeholder="category" name="category" id="basic-icon-default-fullname">
+                        
+                        <% category.forEach(function(x){ %>
+                        <option value="<%= x.categoryName %>"><%= x.categoryName %></option>
+                        <% }) %>
+                    </select>
+                    
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-company">Product</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span id="basic-icon-default-company2" class="input-group-text"
+                      ><i class="bx bx-buildings"></i
+                    ></span> -->
+                    <input
+                      type="text"
+                      id="basic-icon-default-company"
+                      name="productName"
+                      class="form-control"
+                      value="<%= product.productName %>"
+                      aria-label="ACME Inc."
+                      aria-describedby="basic-icon-default-company2"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-email">Description</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span class="input-group-text"><i class="bx bx-envelope"></i></span> -->
+                    <input
+                      type="text"
+                      id="basic-icon-default-email"
+                      name="description"
+                      class="form-control"
+                      value="<%= product.description %>"
+                      
+                      aria-describedby="basic-icon-default-email2"
+                    />
+                   
+                  </div>
+                  
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-phone">Price</label>
+                  <div class="input-group input-group-merge">
+                    <!-- <span id="basic-icon-default-phone2" class="input-group-text"
+                      ><i class="bx bx-phone"></i
+                    ></span> -->
+                    <input
+                      type="number"
+                      id="basic-icon-default-phone"
+                      name="price"
+                      class="form-control phone-mask"
+                      value="<%= product.price %>"
+                      aria-label="658 799 8941"
+                      aria-describedby="basic-icon-default-phone2"
+                    />
+                  </div>
+                </div>
+                <div>
+                    <img style="width: 70px; height: 80px;" src="/<%= product.imageUrl %>" alt="">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-icon-default-message" >image</label>
+                  <div class="input-group input-group-merge">
+                    <input type="file" value="" class="form-control" name="image" id="fileToUpload">
+                    
+                    <!-- <span id="basic-icon-default-message2" class="input-group-text"
+                      ><i class="bx bx-comment"></i
+                    ></span> -->
+                    <!-- <textarea
+                      
+                      id="basic-icon-default-message"
+                      class="form-control"
+                      placeholder="Hi, Do you have a moment to talk Joe?"
+                      aria-label="Hi, Do you have a moment to talk Joe?"
+                      aria-describedby="basic-icon-default-message2"
+                    ></textarea> -->
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-success">Update</button>
+              </form>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/public/adminAssets/vendor/libs/jquery/jquery.js"></script>
+    <script src="/public/adminAssets/vendor/libs/popper/popper.js"></script>
+    <script src="/public/adminAssets/vendor/js/bootstrap.js"></script>
+    <script src="/public/adminAssets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="/public/adminAssets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+
+    <!-- Main JS -->
+    <script src="/public/adminAssets/js/main.js"></script>
+
+    <!-- Page JS -->
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
+</html>

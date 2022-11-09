@@ -1,0 +1,125 @@
+<html lang="en">
+    <head >
+        <title style="color: brown">LOGIN/SIGN UP</title>
+        <meta name="author" content="Zaur">
+        <meta descryption content="Presentation of website">
+        <meta name="keywords" content="technology, cyber security, software">
+        <meta http-equiv="refresh" content="100">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+    <body>
+    <div class="container forms" id="container" style="background-image: url(/Images/image1667310925845.jpg); background-position: center; background-size: cover ; background-repeat: no-repeat;" >
+        <div class="form sign-up" style="background-color:rgba(255, 255, 255, 0.482) ;">
+        <form action="/login/signup" method="post" >
+          <div class="header">Sign Up</div>
+            <span class="under__social">
+             <a href="#" class="link signin-link">or use your email for registration
+                        </a>
+          </span>
+          
+          <div class="button-input-group">
+            <div class="group input-group">
+            <input type="text" placeholder="Name" required name="name">
+          </div>
+          <div class="group input-group">
+            <input type="email" placeholder="Email" required name="email">
+          </div>
+          <div class="group input-group">
+            <input type="text" placeholder="mobile" required name="phone">
+          </div>
+          <div class="group input-group">
+            <input type="password" placeholder="Password" required pattern=".{8,}" name="password">
+          </div>
+          <div class="alert-text signup__alert">
+            <span class="help__text">At least 8 character</span>
+          </div>
+          <div class="group button-group">
+            <button type="submit" class="signup-btn">
+              <span>Sign Up</span>
+            </button>
+          </div>
+          </div>
+          
+        </form>
+      </div>
+      
+      
+      <div class="form sign-in" style="background-color:rgba(255, 255, 255, 0.482) ;">
+        <form action="/login/signin" method="post" >
+          <div class="header">Sign In</div>
+          <div class="social__media__container">
+            <a href="#" class="social codepen">
+              <i class="fa-brands fa-codepen"></i>
+            </a>
+            <a href="#" class="social google">
+              <i class="fa-brands fa-google"></i>
+            </a>
+            <a href="#" class="social instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+          </div>
+           <span class="under__social">
+             <a href="#" class="link signup-link">or use your account</a>
+          </span>
+          
+        <div class="button-input-group">
+          <div class="group input-group">
+            <input type="email" placeholder="Email" required name="email">
+          </div>
+          <div class="group input-group">
+            <input type="password" placeholder="Password" required pattern=".{8,}" name="password">
+          </div>
+          <div class="alert-text">
+            <span class="help__text">At least 8 character</span>
+          </div>
+          <div class="form-link forgot">
+            <a href="#" class="login-link">Forgot your password?</a>
+          </div>
+          <div class="group button-group">
+            <button class="signup-btn" type="submit">
+              <span>Sign in</span>
+            </button>
+          </div>
+        </div>
+        </form>
+      </div>
+      
+      <!--
+      <div class="overlay-wrapper">
+        <div class="overlay">
+          <div class="overlay-panel overlay__left">
+            <h1>Welcome Back!</h1>
+            <p>Please login your personal info</p>
+            
+            <div class="group button-group">
+            <button class="ghost" id="SignIn">
+              <span>Sign in</span>
+            </button>
+          </div>
+          </div>
+          
+          <div class="overlay-panel overlay__right">
+            <h1>Hello, Friend!</h1>
+            <p>Enter your personal details and start your journey with us</p>
+            
+            <div class="group button-group">
+            <button class="ghost" id="SignUp">
+              <span>Sign up</span>
+            </button>
+          </div>
+          </div>
+        </div>
+      </div>
+      -->
+      
+    </div>
+    
+    
+    
+    <script src="./js/signUpLogin.js"></script>
+    </body>
+</html>

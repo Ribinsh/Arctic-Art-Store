@@ -1,0 +1,52 @@
+<%- include ('header.ejs') %>
+
+  <%- include ('nav.ejs') %>
+
+  <div class="card">
+    <h5 class="card-header">Users list</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Index</th>
+            <th>Name</th>
+            <th>email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Address</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            <% users.forEach(function(x){ %>
+          <tr>
+            <td><i class="fab fa-angular fa-lg text-danger me-3"></i><%= index++ %> </td>
+            <td><%= x.name %></td>
+            <td><%= x.email %></td>
+            <td><%= x.phone %></td>
+            <td><%= x.status %></td>
+            <td></td>
+            <td>
+              <% if (x.status == "Blocked") { %>
+                <form action="/admin/unblockUser/<%= x._id %>" method="post">
+                  <button type="submit" class="btn btn-success">Unblock</button>
+                </form>
+                <% } else { %>
+                <form action="/admin/blockUser/<%= x._id %>" method="post">
+                  <button type="submit" class="btn btn-danger">Block</button>
+                </form>
+                <% } %>
+             
+            </td>
+          </tr>
+          <% }) %>
+          
+         
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <%- include ('footer.ejs') %>
+
+
