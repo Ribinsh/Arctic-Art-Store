@@ -10,6 +10,7 @@
 * 	Template Style 
 *
 * ======================================================= */
+
 body {
   font-family: "Playfair Display", serif;
   font-weight: 400;
@@ -17,6 +18,8 @@ body {
   line-height: 1.7;
   color: #828282;
   background: rgb(255, 255, 255);
+  padding:0;
+  margin:0;
 }
 #fh5co-products{
   background-color: rgb(0, 0, 0);
@@ -1084,7 +1087,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 .fh5co-heading {
-  margin-bottom: 5em;
+  margin-bottom: 1em;
 }
 .fh5co-heading.fh5co-heading-sm {
   margin-bottom: 2em;
@@ -1799,4 +1802,3 @@ h1, h2, h3, h4, h5, h6, figure {
   border-bottom-left-radius: 0.5rem;
 }
 
-/*# sourceMappingURL=style.css.map */

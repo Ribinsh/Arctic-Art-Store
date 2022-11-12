@@ -3,11 +3,18 @@ const cookieParser = require('cookie-parser')
 const path = require('path');
 const mongoose =require('./config/connection')
 const session = require('express-session');
-// const logger = require('morgan')
+const logger = require('morgan')
 const multer = require('multer')
 
 
 const app = express();
+
+
+const usersRouter = require('./routes/user/home');
+const adminRouter = require('./routes/admin/adminLogin');
+const loginRouter = require('./routes/user/signUp');
+const { nextTick } = require('process');
+
 
 
 app.use(session({
@@ -32,7 +39,7 @@ const storage =multer.diskStorage({
 })
 app.use(multer({dest:"Images", storage: storage}).single("image"))
 
-// app.use(logger('dev'))
+app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
@@ -44,10 +51,6 @@ app.use(function(req, res, next) {
 
 
 
-const usersRouter = require('./routes/user/home');
-const adminRouter = require('./routes/admin/adminLogin');
-const loginRouter = require('./routes/user/signUp');
-const { nextTick } = require('process');
 
 
 

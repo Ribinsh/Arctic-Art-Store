@@ -5,12 +5,13 @@ const controller = require('../../controller/admin/adminLogin');
 
 // get method
 router.get('/', controller.login)
-router.get('/adminProducts', controller.productList)
-router.get('/addProducts', controller.addProduct)
-router.get('/allUsers', controller.allUsers)
-router.get('/categories',controller.categories)
-router.get('/addCategory' , controller.addCategory)
-
+router.get('/adminProducts',controller.adminSession, controller.productList)
+router.get('/dashboard',controller.adminSession,controller.dashboard)
+router.get('/addProducts',controller.adminSession, controller.addProduct)
+router.get('/allUsers',controller.adminSession, controller.allUsers)
+router.get('/categories',controller.adminSession,controller.categories)
+router.get('/addCategory' ,controller.adminSession, controller.addCategory)
+router.get('/adminLogout',controller.adminLogout)
 
 // post method
 router.post('/adminLogin', controller.loginAdmin)

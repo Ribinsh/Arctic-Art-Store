@@ -8,8 +8,11 @@ router.get('/logout', controller.logout)
 
 
 // post method
-router.post('/signup',controller.signup);
+// router.post('/signup',controller.signup);
 router.post('/signin',controller.doLogin);
+router.post('/send',controller.sendOtp);
+router.post('/resend',controller.resendOtp)
+router.post('/verify', controller.verify)
 
 
 

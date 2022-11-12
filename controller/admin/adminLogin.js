@@ -1,14 +1,35 @@
 const productModel = require("../../model/productModel");
 const categoryModel = require("../../model/categoryModel")
 const userModel = require("../../model/user/signupModel");
-const path = require('path')
+
 
 module.exports = {
+    adminSession: (req , res ,next) => {
+        if (req.session.adminLogin) {
+          next()
+        } else {
+          res.redirect('/admin')
+        }
+   },
+
        
     login: (req, res) => {
 
         res.render('admin/adminLogin')
 
+    },
+
+    adminLogout : (req ,res ,next) => {
+        if(req.session){
+            req.session.destroy((err)=>{
+                if(err) {
+                    return next(err);
+                }
+                else{
+                    return res.redirect ('/admin')
+                }
+            })
+         }
     },
 
 
@@ -17,12 +38,16 @@ module.exports = {
         let password = 'admin';
         console.log(req.body);
         if (req.body.password == password && req.body.email == email) {
-            req.session.adminlogin = true;
+            req.session.adminLogin = true;
         
             res.render('admin/adminHome')}
             else{
                 res.redirect('/admin')
             }
+        },
+        dashboard : (req, res) => {
+             res.render('admin/adminHome')
+
         },
 
         productList: async (req, res) => {
