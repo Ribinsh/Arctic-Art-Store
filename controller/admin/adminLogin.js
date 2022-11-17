@@ -3,6 +3,7 @@ const categoryModel = require("../../model/categoryModel")
 const userModel = require("../../model/user/signupModel");
 
 
+
 module.exports = {
     adminSession: (req , res ,next) => {
         if (req.session.adminLogin) {
@@ -168,9 +169,24 @@ module.exports = {
             })
 
         },
-       
-        
-        
+        // listSupplies : async(req, res) => {
+        //     let id = req.params.id
+        //     await supplyModel.findByIdAndUpdate({_id:id}, {$set : { status :"List"}})
+        //     .then(()=>{
+        //         res.render('admin/artSupplies')
+        //     })
+
+        // },
+
+        // unlistSupplies : async(req, res) => {
+        //     let id = req.params.id
+        //     await supplyModel.findByIdAndUpdate({_id:id}, {$set : { status :"Unlist"}})
+        //     .then(()=>{
+        //         res.render('admin/artSupplies')
+        //     })
+
+        // },
+
         editProductPage: async (req, res) => {
             let id = req.params.id
             let product = await productModel.findOne({_id:id})
@@ -196,7 +212,63 @@ module.exports = {
                 res.redirect('/admin/adminProducts')
             })
 
-         }
+         },
+
+         artSupplyPage : async(req,res) => {
+
+            let products = await productModel.find({category:"Art supplies"});
+            res.render('admin/adminProduct', {products})
+         },
+
+         addArtSupplies : (req,res) => {
+            res.render('admin/addArtSupplies')
+         },
+
+         newArtSupply : async (req,res) => {
+            console.log(req.body)
+            const { category,productName, description, price} = req.body;
+            const image = req.file;
+            console.log(image);
+
+            const newProduct = productModel({
+                category,
+                productName,
+                description,
+                price,
+                imageUrl: image.path
+
+            });
+
+            await newProduct
+            .save()
+            .then(() => {
+                console.log(" new Art supply added successfully");
+                res.redirect("/admin/addArtSupply")
+            })
+            .catch((err) => {
+                console.log(err.message);
+                res.redirect("/admin/addArtSupply")
+            });
+
+         },
+         listSupplies : async(req, res) => {
+            let id = req.params.id
+            await productModel.findByIdAndUpdate({_id:id}, {$set : { status :"List"}})
+            .then(()=>{
+                res.redirect('/admin/artSupplies')
+            })
+
+        },
+
+        unlistSupplies : async(req, res) => {
+            let id = req.params.id
+            await productModel.findByIdAndUpdate({_id:id}, {$set : { status :"Unlist"}})
+            .then(()=>{
+                res.redirect('/admin/artSupplies')
+            })
+
+        },
+
 
 
 

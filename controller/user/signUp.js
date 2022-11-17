@@ -166,6 +166,7 @@ module.exports = {
             return res.redirect('/login');
         }
         req.session.userLogin = true;
+        req.session.user = user;
         res.redirect('/');
    },
 

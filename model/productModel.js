@@ -23,8 +23,14 @@ const productSchema = new mongoose.Schema({
     },
     status : {
         type:String,
-        default: "list"
-    }
+        default: "Unlist"
+    },
+    date : {
+        type : Date,
+        default : Date.now
+    },
+   
+
     
 
 })

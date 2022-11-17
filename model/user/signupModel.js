@@ -25,7 +25,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'Unblocked'
 
+    }, 
+    address : {
+
+    type: String,
+    default : 'Not added'
     }
+        
+    
 })
 
 module.exports = signupModel = mongoose.model('UserData',userSchema);

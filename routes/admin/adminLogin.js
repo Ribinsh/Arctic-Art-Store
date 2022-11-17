@@ -12,6 +12,8 @@ router.get('/allUsers',controller.adminSession, controller.allUsers)
 router.get('/categories',controller.adminSession,controller.categories)
 router.get('/addCategory' ,controller.adminSession, controller.addCategory)
 router.get('/adminLogout',controller.adminLogout)
+router.get('/artSupplies', controller.adminSession,controller.artSupplyPage)
+router.get('/addArtSupply',controller.addArtSupplies)
 
 // post method
 router.post('/adminLogin', controller.loginAdmin)
@@ -21,8 +23,11 @@ router.post('/blockUser/:id' , controller.blockUser)
 router.post('/unblockUser/:id' , controller.unblockUser)
 router.post('/deleteProduct/:id' ,controller.deleteProduct)
 router.post('/listProduct/:id' ,controller.listProduct)
+router.post('/listSupplies/:id', controller.listSupplies)
+router.post('/unlistSupplies/:id', controller.unlistSupplies)
 router.post('/editProduct/:id', controller.editProductPage)
 router.post('/updateProduct/:id',controller.updateProduct)
+router.post('/newArtSupply', controller.newArtSupply)
 
 
 

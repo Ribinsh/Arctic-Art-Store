@@ -17,7 +17,7 @@
     </head>
   <body>
 
-
+    <%- include ('nav.ejs') %>
 <div class="cart-wrap">
     <div class="container">
         <div class="row">
@@ -35,7 +35,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                           <% wishlist.forEach(function(product) { %> 
+                           <% wish.forEach(function(product) { %> 
                             <tr>
                                 <td width="45%">
                                     <div class="display-flex align-center">
