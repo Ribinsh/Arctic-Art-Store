@@ -1,0 +1,45 @@
+<%- include ('userHeader.ejs') %>
+
+<%- include ('nav.ejs') %>
+
+<div class="card">
+    <h5 class="card-header">All products</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Order status</th>
+                    <th>Payment</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                <% products.forEach(function(x){ %>
+                <tr>
+                    <td><img src="/<%= x.imageUrl %>" alt="" style="height: 60px; width:60px ;"></td>
+                    <td><%= x.productName %></td>
+                    <td><%= x.category %></td>
+                    <td><strong><%= x.price %></strong></td>
+                    <td><%= x.orderStatus %> </td>
+                    <td>
+                       
+                        
+                    </td>
+                </tr>
+                <% }) %>
+                
+               
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+<%- include ('userFooter') %>

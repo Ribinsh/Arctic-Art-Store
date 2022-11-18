@@ -15,7 +15,9 @@ router.get('/deleteWishlist/:id', controller.deleteWishlist)
 router.get('/profilePage',controller.userSession,controller.profilePage)
 
 router.get('/addAddressPage',controller.addAddressPage)
-
+router.get('/checkout', controller.checkoutPage)
+router.get('/orderPlaced/:id', controller.orderSuccess)
+router.get('/orderDetails' , controller.orderDetails)
 
 router.post('/addToCart/:id',controller.userSession, controller.addToCart)
 router.get('/addToCartWishlist/:id', controller.addToCartWishlist)
