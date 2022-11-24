@@ -55,8 +55,10 @@
                             <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
                                 <h2><%= single.productName %></h2>
                                 <p>
-                                    <a href="#" class="btn btn-primary btn-outline btn-lg">Add to Cart</a>
-                                    <a href="#" class="btn btn-primary btn-outline btn-lg">Compare</a>
+                                    
+                                    <button class="btn btn-primary btn-outline btn-lg" onclick="addToCart('<%=single._id %>','<%=single.productName %>')">Add to cart</button>
+                                    <button class="btn btn-primary btn-outline btn-lg" onclick="addToWishlist('<%=single._id %>','<%=single.productName %>')">Add to wishlist</button>
+                                    
                                 </p>
                             </div>
                         </div>
@@ -239,6 +241,71 @@
             </div>
         </footer>
         </div>
+
+        <script>
+             function addToCart (productId, productName) {
+             
+			 $.ajax({
+				 url: '/addToCart/'+productId,
+				 method: 'post',
+
+				 success: (response)  => {
+					 if (response.status) {
+						 Swal.fire({
+					   
+						 
+						icon: 'success',
+						text: productName,
+						title: 'Item added to Cart',
+						showConfirmButton: false,
+						timer: 1500
+						 })
+
+					 } else {
+						 Swal.fire({
+					   icon: 'error',
+					   title: 'Oops...',
+					   text: 'Something went wrong!',
+
+					   })
+					 }
+				 }
+				 
+			 })
+		  }
+
+          
+			 function addToWishlist (productId, productName) {
+             
+             $.ajax({
+                 url: '/addTowishlist/'+productId,
+                 method: 'post',
+
+                 success: (response)  => {
+                     if (response.status) {
+                         Swal.fire({
+                       
+                         
+                        icon: 'success',
+                        text: productName,
+                        title: 'Item added to wishlist',
+                        showConfirmButton: false,
+                        timer: 1500
+                         })
+
+                     } else {
+                         Swal.fire({
+                       icon: 'error',
+                       title: 'Oops...',
+                       text: 'Something went wrong!',
+
+                       })
+                     }
+                 }
+                 
+             })
+          }
+        </script>
     
 
 

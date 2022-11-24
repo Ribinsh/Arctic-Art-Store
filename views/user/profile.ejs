@@ -21,8 +21,9 @@
 
      </head> 
   <body> 
-
+    
     <%- include ('nav.ejs') %>
+    
 
 <div class="container">
     <div class="main-body">
@@ -42,8 +43,12 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
-                    <!-- <img src="https://cdn.vectorstock.com/i/1000x1000/31/77/beautiful-latin-woman-avatar-character-icon-vector-33983177.webp" alt="Admin" class="rounded-circle" width="150"> -->
+                    
+                    <% if(user.gender == "female") { %>
+                    <img src="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/11_avatar-512.png" alt="Admin" class="rounded-circle" width="150">
+                    <% } else { %>
+                      <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                    <% } %>
                     <div class="mt-3">
                       <h4><%= user.name %></h4>
                       <p class="text-secondary mb-1"><%= user.email %></p>
@@ -104,10 +109,10 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Mobile</h6>
+                      <h6 class="mb-0">Gender</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      (320) 380-4539
+                      <%= user.gender %>
                     </div>
                   </div>
                   <hr>
@@ -115,22 +120,34 @@
                     <div class="col-sm-3">
                       <h6 class="mb-0">Address</h6>
                     </div>
+                    <% if (address ) { %>
                     <div class="col-sm-9 text-secondary">
-                      <%= user.address %>
+                      
+                      Address added
                     </div>
+                    <% }  else { %>
+                      <div class="col-sm-9 text-secondary">
+                        <%= user.address %>
+                      </div> 
+                    <% } %>   
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-info " target="__blank" href="#">Edit</a>
-                      <a class="btn btn-success " target="__blank" href="/addAddressPage">Add address</a>
+                      
+                      <a class="btn btn-info " target="__blank" href="/editUser">Edit</a>
+                      <% if (address ) { %>
+                      <a class="btn btn-success " target="__blank" href="/addAddressPage">Add new address</a>
+                      <% }  else { %>
+                        <a class="btn btn-success " target="__blank" href="/addAddressPage">Add address</a>
+                      <% } %>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="row gutters-sm">
-
+                <% if (address != null ) { %>
                
                 <div class="col-sm-6 mb-3">
                   <div class="card h-100">
@@ -166,8 +183,11 @@
                     </div>
                   </div>
                 </div>
+              
 
-           
+
+
+               <% if (address2 != null ) { %>
                 <div class="col-sm-6 mb-3">
                   <div class="card h-100">
                     <div class="card-body">
@@ -203,6 +223,17 @@
                     </div>
                   </div>
                 </div>
+
+                <% }  %>
+
+                <% }  else { %>
+
+                  <h5>Address not added </h5>
+
+                  <% } %>
+
+
+
               </div>
 
 

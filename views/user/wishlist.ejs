@@ -14,6 +14,10 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
   <body>
 
@@ -49,8 +53,8 @@
                                 </td>
                                 <td width="15%" class="price">Rs.<%= product.price %></td>
                                 <td width="15%"><span class="in-stock-box">In Stock</span></td>
-                                <td width="15%"><a href="/addToCartWishlist/<%= product._id %>"><button class="round-black-btn small-btn">Add to Cart</button></a></td>
-                                <td width="10%" class="text-center"><a href="/deleteWishlist/<%= product._id %>" class="trash-icon"><i class="bi bi-trash"></i></a></td>
+                                <td width="15%"><button onclick="addToCart('<%=product._id %>','<%=product.productName %>')" class="round-black-btn small-btn">Add to Cart</button></td>
+                                <td width="10%" class="text-center"><a href="/deleteWishlist/<%= product._id %>" id="sweet" class="trash-icon"><i class="bi bi-trash"></i></a></td>
                             </tr>
                           <%  }) %>
                         </tbody>
@@ -62,4 +66,60 @@
 </div>
 
 </body>
+
+<script>
+document.getElementById('sweet').addEventListener('click',function(){
+    Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    )
+  }
+})
+
+})
+
+
+    function addToCart (productId, productName) {
+             
+			 $.ajax({
+				 url: '/addToCart/'+productId,
+				 method: 'post',
+
+				 success: (response)  => {
+					 if (response.status) {
+						 Swal.fire({
+					   
+						 
+						icon: 'success',
+						text: productName,
+						title: 'Item added to Cart',
+						showConfirmButton: false,
+						timer: 1500
+						 })
+
+					 } else {
+						 Swal.fire({
+					   icon: 'error',
+					   title: 'Oops...',
+					   text: 'Something went wrong!',
+
+					   })
+					 }
+				 }
+				 
+			 })
+		  }
+
+</script>
 </html>

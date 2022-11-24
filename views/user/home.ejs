@@ -1,5 +1,5 @@
 <%- include ('userHeader.ejs') %>
-	<div class="fh5co-loader"></div>
+	<!-- <div class="fh5co-loader"></div>
 
 	<div id="page">
 		<nav class="fh5co-nav" role="navigation">
@@ -8,20 +8,20 @@
 
 
 					<div class="col-md-3 col-xs-2">
-						<!-- <div style="width: 100px;">
+						 <div style="width: 100px;">
 						<img style="height:100px ; width: 100px;" src="/logo/bear.webp" alt="">
 					 </div> -->
-						<div id="fh5co-logo"><img style="height:70px ; width: 70px;" src="/images/logo.png" alt=""><a
+						<!-- <div id="fh5co-logo"><img style="height:70px ; width: 70px;" src="/images/logo.png" alt=""><a
 								href="#">Arctic</a></div>
 					</div>
 					<div class="navs col-md-6 col-xs-6 text-center menu-1">
 						<ul>
 							<li class="has-dropdown">
 								<a href="/products">Shop</a>
-								<!-- <ul class="dropdown">
+								 <ul class="dropdown">
 								<li><a href="single.html">Single Shop</a></li>
 							</ul> -->
-							</li>
+							<!-- </li>
 							<li><a href="/about">About</a></li>
 							<li class="has-dropdown">
 								<a href="">Categories</a>
@@ -90,7 +90,8 @@
 
 			</div>
 
-		</nav>
+		</nav> --> 
+		<%- include ('nav.ejs') %>
 
 		<aside id="fh5co-hero" class="js-fullheight">
 			<div class="flexslider js-fullheight">
@@ -132,7 +133,7 @@
 					</li>
 					<li style="background-image: url(images/artproduct.jpg);">
 						<div class="container">
-							<div class="col-md-6 col-md-offset-3 col-md-pull-3 js-fullheight slider-text">
+							<div class="col-md-6  col-md-offset-3 col-md-pull-3 js-fullheight slider-text">
 								<div class="slider-text-inner">
 									<div class="desc">
 										<!-- <span class="price">$750</span> -->
@@ -179,7 +180,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-2 text-center animate-box">
+					<div class="col-md-2 col-sm-4 col-xs-4 text-center animate-box">
 						<div class="product">
 							<div class="product-grids" style="background-image:url(images/buildings.jpg);">
 								<div class="inner">
@@ -195,7 +196,7 @@
 						</div> -->
 						</div>
 					</div>
-					<div class="col-md-2 text-center animate-box">
+					<div class="col-md-2 col-sm-4 col-xs-4 text-center animate-box">
 						<div class="product">
 							<div class="product-grids" style="background-image:url(images/deer.jpg);">
 								<!-- <span class="sale">Sale</span> -->
@@ -212,7 +213,7 @@
 						</div> -->
 						</div>
 					</div>
-					<div class="col-md-2 text-center animate-box">
+					<div class="col-md-2 col-sm-4 col-xs-4 text-center animate-box">
 						<div class="product">
 							<div class="product-grids" style="background-image:url(images/oldman.jpg);">
 
@@ -229,7 +230,7 @@
 						</div> -->
 						</div>
 					</div>
-					<div class="col-md-2 text-center animate-box">
+					<div class="col-md-2 col-sm-4 col-xs-4 text-center animate-box">
 						<div class="product">
 							<div class="product-grids" style="background-image:url(images/rider.jpg);">
 								<div class="inner">
@@ -245,7 +246,7 @@
 						</div> -->
 						</div>
 					</div>
-					<div class="col-md-2 text-center animate-box">
+					<div class="col-md-2 col-sm-4 col-xs-4 text-center animate-box">
 						<div class="product">
 							<div class="product-grids" style="background-image:url(images/lady.jpg);">
 								<div class="inner">
@@ -261,7 +262,7 @@
 						 </div> -->
 						</div>
 					</div>
-					<div class="col-md-2 text-center animate-box">
+					<div class="col-md-2 col-sm-4 col-xs-4 text-center animate-box">
 						<div class="product">
 							<a href="/products">
 								<div class="product-grids" style="background-image: url(images/viewall.png) ;">
@@ -340,7 +341,7 @@
 		<!-- <div class="container">
 			<div class="row"> -->
 		<div class="layout-wrapper layout-content-navbar">
-			<div class="layout-container">
+			<div class="container">
 				<!-- Menu -->
 
 
@@ -350,12 +351,12 @@
 
 					<div class="container-xxl flex-grow-1 container-p-y " style="text-align:center ;">
 
-						<h1 class="pb-1 mb-4" style="font-family: sans-serif;">Our Collections</h1>
+						<h1 class="pb-1 mb-4" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Our Collections</h1>
 						<div class="row mb-5">
 
 							<% category.forEach(function(x){ %>
 								<a href="/products/#<%= x.categoryName %>">
-									<div class="col-md-3 col-xl-3 ">
+									<div class="col-md-3 col-sm-4 col-xs-6 col-xl-3 ">
 										<div class="card bg-white border-0 text-white " style="height:300px ;">
 											<img class="card-img" style="height:260px ;" src="/<%= x.imageUrl %>"
 												alt="Card image" />
@@ -420,12 +421,13 @@
 
 								<div class="inner">
 
-									<form action="/addToCart/<%=product._id %>" method="post">
-										<button class="btn" type="submit"><i class="icon-shopping-cart"></i></button>
-									</form>
-									<form action="/addToWishlist/<%=product._id %>" method="post">
-										<button class="btn" type="submit"><i class="bi bi-heart-fill"></i></button>
-									</form>
+									<button onclick="addToCart('<%=product._id %>','<%=product.productName %>')" class="btn" type="submit"><i
+										class="icon-shopping-cart"></i></button>
+							
+							
+								<button onclick="addToWishlist('<%=product._id %>','<%=product.productName %>')" class="btn" type="submit"><i
+										class="bi bi-heart-fill"></i></button>
+							
 
 								</div>
 								<a href="/single/<%= product._id %>"><img style="height:300px ; width:250px ;"
@@ -651,5 +653,70 @@
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
+
+	<script>
+
+		function addToWishlist (productId, productName) {
+		
+		   $.ajax({
+			   url: '/addTowishlist/'+productId,
+			   method: 'post',
+
+			   success: (response)  => {
+				   if (response.status) {
+					   Swal.fire({
+					 
+					   
+					  icon: 'success',
+					  text: productName,
+					  title: 'Item added to wishlist',
+					  showConfirmButton: false,
+					  timer: 1500
+					   })
+
+				   } else {
+					   Swal.fire({
+					 icon: 'error',
+					 title: 'Oops...',
+					 text: 'Something went wrong!',
+
+					 })
+				   }
+			   }
+			   
+		   })
+		}
+
+		function addToCart (productId, productName) {
+		
+		$.ajax({
+			url: '/addToCart/'+productId,
+			method: 'post',
+
+			success: (response)  => {
+				if (response.status) {
+					Swal.fire({
+				  
+					
+				   icon: 'success',
+				   text: productName,
+				   title: 'Item added to Cart',
+				   showConfirmButton: false,
+				   timer: 1500
+					})
+
+				} else {
+					Swal.fire({
+				  icon: 'error',
+				  title: 'Oops...',
+				  text: 'Something went wrong!',
+
+				  })
+				}
+			}
+			
+		})
+	 }
+   </script>
 
 	<%- include ('userFooter.ejs') %>

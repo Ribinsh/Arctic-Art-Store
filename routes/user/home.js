@@ -10,21 +10,24 @@ router.get('/wishlist',controller.userSession, controller.wishlist)
 router.get('/products',controller.userSession, controller.products)
 router.get('/about',controller.aboutPage )
 router.get('/single/:id',controller.userSession, controller.single)
-router.get('/deleteCart/:id',controller.userSession, controller.deleteCart)
+router.get('/deleteCart/:id/:quantity',controller.userSession, controller.deleteCart)
 router.get('/deleteWishlist/:id', controller.deleteWishlist)
 router.get('/profilePage',controller.userSession,controller.profilePage)
 
 router.get('/addAddressPage',controller.addAddressPage)
 router.get('/checkout', controller.checkoutPage)
-router.get('/orderPlaced/:id', controller.orderSuccess)
+router.post('/orderPlaced', controller.orderSuccess)
+router.get('/orderSuccess', controller.orderSuccessPage)
+router.post('/verifyPayment', controller.verifyPayment)
 router.get('/orderDetails' , controller.orderDetails)
 
 router.post('/addToCart/:id',controller.userSession, controller.addToCart)
-router.get('/addToCartWishlist/:id', controller.addToCartWishlist)
+router.get('/editUser', controller.editUserData)
+router.post('/updateUserData', controller.updateUserData)
 
 router.post('/addToWishlist/:id',controller.userSession , controller.addToWishlist)
 
 router.post('/change-quantity' ,controller.changeCartQuantity)
 router.post('/newAddress', controller.newAddress)
-
+router.post('/newDeliveryAddress', controller.newDeliveryAddress)
 module.exports = router;

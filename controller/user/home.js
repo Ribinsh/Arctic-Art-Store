@@ -7,6 +7,13 @@ const addressModel = require( '../../model/addressModel')
 const orderModel = require("../../model/orderModel")
 const { param } = require("../../routes/user/home");
 
+const Razorpay = require('razorpay');
+
+var instance = new Razorpay({
+  key_id: 'rzp_test_V5iFHTFztlUktp',
+  key_secret: 'TbGeNBaswAhSLk4C4zG2NJnY',
+});
+
 module.exports = {
   userSession: (req, res, next) => {
     if (req.session.userLogin) {
@@ -81,10 +88,10 @@ module.exports = {
 
         if(productExist) {
             await cartModel.findOneAndUpdate({userId, "products.productId": productId}, {$inc :{"products.$.quantity": 1 , "products.$.total" : total, cartTotal : total }})
-            .then(() => {
+            .then((response) => {
                 console.log(" product added to cart successfully");
-                res.redirect("/products");
-              });
+                res.json({ status: true });
+            })
         }
         else {
       await cartModel
@@ -94,7 +101,7 @@ module.exports = {
         ) 
         .then(() => {
           console.log(" product added to cart successfully");
-          res.redirect("/products");
+          res.json({ status: true });
         });
         }
     } else {
@@ -107,49 +114,49 @@ module.exports = {
         .save()
         .then(() => {
           console.log(" product added to cart successfully");
-          res.redirect("/products");
+          res.json({ status: true });
         })
         .catch((err) => {
           console.log(err.message);
-          res.redirect("/products");
+          res.json({ status: false });
         });
     }
   },
 
-  addToCartWishlist: async (req, res) => {
-    console.log(req.params.id);
-    let productId = req.params.id;
-    let userData = req.session.user;
-    let userId = userData._id;
-    let wishlist = await cartModel.findOne({ userId: userId });
+  // addToCartWishlist: async (req, res) => {
+  //   console.log(req.params.id);
+  //   let productId = req.params.id;
+  //   let userData = req.session.user;
+  //   let userId = userData._id;
+  //   let wishlist = await cartModel.findOne({ userId: userId });
 
-    if (wishlist) {
-      await cartModel
-        .findOneAndUpdate(
-          { userId: userId },
-          { $push: { products: { productId } } }
-        )
-        .then(() => {
-          console.log(" product added to cart successfully");
-          res.redirect("/products");
-        });
-    } else {
-      const cartProduct = new cartModel({
-        userId,
-        products: [{ productId }],
-      });
-      await cartProduct
-        .save()
-        .then(() => {
-          console.log(" product added to cart successfully");
-          res.redirect("/products");
-        })
-        .catch((err) => {
-          console.log(err.message);
-          res.redirect("/products");
-        });
-    }
-  },
+  //   if (wishlist) {
+  //     await cartModel
+  //       .findOneAndUpdate(
+  //         { userId: userId },
+  //         { $push: { products: { productId } } }
+  //       )
+  //       .then(() => {
+  //         console.log(" product added to cart successfully");
+  //         res.redirect("/products");
+  //       });
+  //   } else {
+  //     const cartProduct = new cartModel({
+  //       userId,
+  //       products: [{ productId }],
+  //     });
+  //     await cartProduct
+  //       .save()
+  //       .then(() => {
+  //         console.log(" product added to cart successfully");
+  //         res.redirect("/products");
+  //       })
+  //       .catch((err) => {
+  //         console.log(err.message);
+  //         res.redirect("/products");
+  //       });
+  //   }
+  // },
 
   cart: async (req, res) => {
     let userData = req.session.user;
@@ -160,13 +167,13 @@ module.exports = {
       .populate("products.productId")
       .sort({ date: -1 });
     console.log(list);
-    console.log(list._id);
-    let cartId = list._id;
+    
+    
     if (list) {
       let cartProducts = list.products;
-
+      let cartId = list._id;
       // res.render('user/cart', {cartProducts,category, index:1})
-      if (req.session.userLogin) {
+      
         res.render("user/cart", {
           cartId,
           cartProducts,
@@ -175,33 +182,29 @@ module.exports = {
           login: true,
           list
         });
-      } else {
-        res.render("user/cart", {
-          cartId,
-          cartProducts,
-          category,
-          index: 1,
-          login: false,
-        });
-      }
+      
     } else {
-      res.render("user/cart");
+      res.render("user/cart", {category, cartProducts: null, list:null,  login: true,});
     }
   },
 
   deleteCart: async (req, res) => {
     let id = req.params.id;
+    let quantity =req.params.quantity;
+    console.log(quantity);
     let userData = req.session.user;
     let userId = userData._id;
     let product = await productModel.findOne({_id : id})
     let price = product.price;
-    // let cartProduct =  await cartModel.findOne({userId : userId}) 
+
+   
     console.log(id);
     await cartModel
-      .findOneAndUpdate({ userId }, { $pull: { products : { productId: id }}, $inc : {cartTotal: - price} })
+      .findOneAndUpdate({ userId }, { $pull: { products : { productId: id }}, $inc : {cartTotal: - price*quantity} })
       .then(() => {
         res.redirect("/cart");
-      });
+      })
+      
   },
 
   addToWishlist: async (req, res) => {
@@ -217,9 +220,9 @@ module.exports = {
           { userId: userId },
           { $addToSet: { productId: productId } }
         )
-        .then(() => {
+        .then((response) => {
           console.log(" product added to cart successfully");
-          res.redirect("/products");
+          res.json({ status: true });
         });
     } else {
       const wish = new wishlistModel({
@@ -228,15 +231,20 @@ module.exports = {
       });
       await wish
         .save()
-        .then(() => {
-          console.log(" product added to cart successfully");
-          res.redirect("/products");
+        .then((response) => {
+          console.log(" product added to wishlist")
+            res.json({ status: true });
         })
         .catch((err) => {
           console.log(err.message);
-          res.redirect("/products");
+          res.json({ status: false });
         });
     }
+    
+  
+
+
+    
   },
 
   wishlist: async (req, res) => {
@@ -277,14 +285,22 @@ module.exports = {
     let user = await userModel.findOne({ _id: userId });
     let address = await addressModel.findOne({ userId: userId })
     
-    let address1= address.address[0];
-    let address2= address.address[1];
+    if ( address) {
+      let address1= address.address[0];
+      let address2= address.address[1];
+      if (req.session.userLogin) {
+        res.render("user/profile", { user, category,address, address1, address2, login: true });
+      } else {
+        res.render("user/profile", { user, category,address, address1, address2, login: false });
+      }
 
+  } else {
     if (req.session.userLogin) {
-      res.render("user/profile", { user, category,address1,address2, login: true });
+      res.render("user/profile", { user, category,address, login: true });
     } else {
-      res.render("user/profile", { user, category,address1,address2, login: false });
+      res.render("user/profile", { user, category, address,  login: false });
     }
+  }
   },
 
   changeCartQuantity: async (req, res) => {
@@ -374,60 +390,227 @@ module.exports = {
   let cartProducts = list.products;
 
 
-    if (req.session.userLogin) {
-      res.render("user/checkout", { totalAmount,user,cartProducts, category,address1,address2, login: true });
-    } else {
-      res.render("user/checkout", {totalAmount, user,cartProducts, category,address1,address2, login: false });
-    }
+    
+      res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false, category,address1,address2, login: true });
+    
+     
   },
 
   orderSuccess : async(req ,res) => {
-    let address = req.params.id
+    let address = req.body.addressId
+    let paymentMethod = req.body.paymentMethod
     // let addressData = await addressModel.findOne({address: address})    
     let userData = req.session.user;
     let userId = userData._id;
     let cart = await cartModel.findOne({ userId})
     let total = cart.cartTotal
     let products = cart.products
-    let category = await categoryModel.find()
+    
 
     const newOrder = new orderModel ({
       userId,
       products,
       total,
       address,
-      // paymentMethod,
+      paymentMethod,
       orderStatus : "Order Placed"
     })
     newOrder.save()
     .then(async() =>{
       await cartModel.findOneAndDelete ({_id: cart._id})
-    
+      let orderId = newOrder._id
+      let total = cart.cartTotal
+      console.log(paymentMethod);
+      if (paymentMethod === 'COD') {
+        res.json({codSuccess:true})
+      } else {
+        
+          return new Promise (async(resolve,reject)=>{
+            instance.orders.create({
+                amount: total * 100,
+                currency: "INR",
+                receipt: "" + orderId,
+                
+              },function (err,order) {
+                console.log("New order ", order)
+                resolve(order)
+              })
+        }).then((response)=>{
+          res.json(response)
+        })
+          
+         
+        
+      }
+    })
 
     
-    if (req.session.userLogin) {
-      res.render("user/orderPlaced", {  category, login: true });
-    } else {
-      res.render("user/orderPlaced", { category, login: false });
-    }
-  })
+   
 
   },
+  verifyPayment : (req , res) => {
+    console.log(req.body);
+    let details = req.body
+    return new Promise (async(resolve,reject)=>{
+      const crypto = require('crypto')
+      let hmac = crypto.createHmac('sha256', 'TbGeNBaswAhSLk4C4zG2NJnY')
+      hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
+      hmac = hmac.digest('hex')
+      if(hmac == details['payment[razorpay_signature]']){
+          resolve()
+      }else{
+          reject()
+      }
+  }).then(()=>{
+    console.log(req.body['receipt']);
+    res.json({status:true})
+  })
+  }
+  ,
+//   generateRazorpay: (orderId, total)=>{
+//     return new Promise (async(resolve,reject)=>{
+//         instance.orders.create({
+//             amount: total * 100,
+//             currency: "INR",
+//             receipt: "" + orderId,
+            
+//           },function (err,order) {
+//             console.log("New order ", order)
+//             resolve(order)
+//           })
+//     })
+// },
+  
 
   orderDetails : async (req , res ) => {
     let category = await categoryModel.find();
     let userData = req.session.user;
     let userId = userData._id;
-    let order = await orderModel
-    .findOne({ userId: userId })
-    .populate("products.productId");
-    let products = order.productId;
+    let order = await orderModel.find({ userId }).populate('products.productId');
+    
 
     if (req.session.userLogin) {
-      res.render("user/orderDetails", { products, category, login: true });
+      res.render("user/orderDetails", { order, category, login: true });
     } else {
-      res.render("user/orderDetails", { products,category, login: false });
+      res.render("user/orderDetails", { order,category, login: false });
     }
+
+  },
+  orderSuccessPage : async (req , res) => {
+    let category = await categoryModel.find();
+
+    if (req.session.userLogin) {
+      res.render("user/orderPlaced", {  category, login: true });
+    } else {
+      res.render("user/orderPlaced", { category, login: false });
+    }
+
+  },
+ 
+  editUserData : async(req , res) => {
+    let user = req.session.user
+    let category = await categoryModel.find();
+    if (req.session.userLogin) {
+      res.render("user/editUser", {  user,category, login: true });
+    } else {
+      res.render("user/editUser", {user, category, login: false });
+    }
+
+  },
+
+  updateUserData :async (req, res) => {
+    let userData = req.session.user
+    const userId = userData._id
+    const { name, email, phone, gender} = req.body
+    console.log(phone);
+
+    let newData = await userModel.findOneAndUpdate({_id : userId} , {$set : {name, email, phone, gender}}
+       );
+       await newData.save().then(() =>{
+        res.redirect('/profilePage')
+       })
+
+
+ 
+
+  },
+
+  newDeliveryAddress : async (req , res) => {
+
+    const {fullName, houseName, city, state, pincode,phone} = req.body;
+    let userData = req.session.user;
+    let userId = userData._id;
+
+    let exist = await addressModel.findOne({userId : userId})
+
+    if (exist) {
+        await addressModel.findOneAndUpdate({userId }, {$push: {address:{fullName, houseName, city, state, pincode,phone}}})
+        .then( async() => {
+            console.log(" address added ");
+            let userData = req.session.user;
+            let userId = userData._id;
+            let category = await categoryModel.find();
+            let user = await userModel.findOne({ _id: userId });
+            let address = await addressModel.findOne({ userId: userId })
+
+            let length = address.address.length
+            let address1= address.address[0];
+            let address2= address.address[length-1];
+        
+            let list = await cartModel
+            .findOne({ userId: userId })
+            .populate("products.productId")
+            .sort({ date: -1 });
+          console.log(list);
+          console.log(list._id);
+          let totalAmount = list.cartTotal;
+          let cartProducts = list.products;
+        
+        
+            
+              res.render("user/checkout", { totalAmount,user,cartProducts, newAddress: true, category,address1,address2, login: true });
+            
+        })
+    }
+    else {
+        const address = new addressModel({
+            userId,
+            address:[{fullName, houseName, city, state, pincode,phone}]
+          });
+          await address
+            .save()
+            .then( async() => {
+              console.log(" address added successfully");
+              let userData = req.session.user;
+              let userId = userData._id;
+              let category = await categoryModel.find();
+              let user = await userModel.findOne({ _id: userId });
+              let address = await addressModel.findOne({ userId: userId })
+              
+              let address1= address.address[0];
+              let address2= address.address[1];
+          
+              let list = await cartModel
+              .findOne({ userId: userId })
+              .populate("products.productId")
+              .sort({ date: -1 });
+            console.log(list);
+            console.log(list._id);
+            let totalAmount = list.cartTotal;
+            let cartProducts = list.products;
+          
+          
+              
+                res.render("user/checkout", { totalAmount,user,cartProducts, category,address1,address2, login: true });
+              
+              
+            })
+            .catch((err) => {
+              console.log(err.message);
+              res.redirect("/profilePage");
+            });
+    }
+
 
   }
 };

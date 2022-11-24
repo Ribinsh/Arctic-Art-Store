@@ -3,7 +3,7 @@
 <%- include ('nav.ejs') %>
 
 <div class="card">
-    <h5 class="card-header">All products</h5>
+    <h5 class="card-header" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ; font-size:30px;">All Orders</h5>
     <div class="table-responsive text-nowrap">
         <table class="table">
             <thead>
@@ -11,26 +11,26 @@
                     <th>Product</th>
                     <th>Product Name</th>
                     <th>Category</th>
+                    <th>Quantuty</th>
                     <th>Price</th>
                     <th>Order status</th>
                     <th>Payment</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-                <% products.forEach(function(x){ %>
+             <% order.forEach(function(product){ %>    
+                <% product.products.forEach(function(x){ %>
                 <tr>
-                    <td><img src="/<%= x.imageUrl %>" alt="" style="height: 60px; width:60px ;"></td>
-                    <td><%= x.productName %></td>
-                    <td><%= x.category %></td>
-                    <td><strong><%= x.price %></strong></td>
-                    <td><%= x.orderStatus %> </td>
-                    <td>
-                       
-                        
-                    </td>
+                    <td><img src="/<%= x.productId.imageUrl %>" alt="" style="height: 60px; width:60px ;"></td>
+                    <td><%= x.productId.productName %></td>
+                    <td style="font-size: large; color:black ;"><%= x.productId.category %></td>
+                    <td><%= x.quantity %></td>
+                    <td><strong><%= x.total %></strong></td>
+                    <td style="color:red ;"><%= product.orderStatus %> </td>
+                    <td>Cash on delivery</td>
                 </tr>
                 <% }) %>
-                
+                <% }) %>
                
                 
             </tbody>

@@ -7,14 +7,14 @@ const orderSchema = new mongoose.Schema ({
         type:ObjectId,
         required: true
     },
-    products : {
-        type:[{
-            productId: { type:ObjectId, ref: 'Product'},
-            quantity: {type:Number  },
-            total : {type: Number , required: true},
-            
-        }],
-    },
+    products : [{
+            productId: { 
+                type:ObjectId, 
+                ref: 'Product'
+            },
+            quantity: {type: Number},
+            total : { type: Number} 
+    }],
     total : {
         type: Number,
         required:true
@@ -24,9 +24,10 @@ const orderSchema = new mongoose.Schema ({
         required: true,
         ref : 'userAddress'
     },
-    // paymentMethod : {
-    //     type: String
-    // },
+    paymentMethod : {
+        type: String,
+        default: "Pending"
+    },
     orderStatus : {
         type : String,
         default : 'Order placed'

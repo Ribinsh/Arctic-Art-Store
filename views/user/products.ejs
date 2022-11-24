@@ -50,7 +50,9 @@
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!-- bootstrap icon -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
@@ -108,14 +110,14 @@
 
 												<div class="inner">
 
-													<form action="/addToCart/<%=product._id %>" method="post">
-														<button class="btn" type="submit"><i
+													
+														<button onclick="addToCart('<%=product._id %>','<%=product.productName %>')" class="btn" type="submit"><i
 																class="icon-shopping-cart"></i></button>
-													</form>
-													<form action="/addToWishlist/<%=product._id %>" method="post">
-														<button class="btn" type="submit"><i
+													
+													
+														<button onclick="addToWishlist('<%=product._id %>','<%=product.productName %>')" class="btn" type="submit"><i
 																class="bi bi-heart-fill"></i></button>
-													</form>
+													
 
 												</div>
 												<a href="/single/<%= product._id %>"><img
@@ -234,4 +236,69 @@
 		<div class="gototop js-top">
 			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 		</div>
+
+		<script>
+
+			 function addToWishlist (productId, productName) {
+             
+				$.ajax({
+					url: '/addTowishlist/'+productId,
+					method: 'post',
+
+					success: (response)  => {
+						if (response.status) {
+							Swal.fire({
+                          
+							
+                           icon: 'success',
+						   text: productName,
+                           title: 'Item added to wishlist',
+                           showConfirmButton: false,
+                           timer: 1500
+                            })
+
+						} else {
+							Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Something went wrong!',
+  
+                          })
+						}
+					}
+					
+				})
+			 }
+
+			 function addToCart (productId, productName) {
+             
+			 $.ajax({
+				 url: '/addToCart/'+productId,
+				 method: 'post',
+
+				 success: (response)  => {
+					 if (response.status) {
+						 Swal.fire({
+					   
+						 
+						icon: 'success',
+						text: productName,
+						title: 'Item added to Cart',
+						showConfirmButton: false,
+						timer: 1500
+						 })
+
+					 } else {
+						 Swal.fire({
+					   icon: 'error',
+					   title: 'Oops...',
+					   text: 'Something went wrong!',
+
+					   })
+					 }
+				 }
+				 
+			 })
+		  }
+		</script>
 		<%- include ('userFooter.ejs') %>
