@@ -7,6 +7,8 @@ const addressModel = require( '../../model/addressModel')
 const orderModel = require("../../model/orderModel")
 const { param } = require("../../routes/user/home");
 
+let addressIndex = 0;
+
 const Razorpay = require('razorpay');
 
 var instance = new Razorpay({
@@ -189,20 +191,20 @@ module.exports = {
   },
 
   deleteCart: async (req, res) => {
-    let id = req.params.id;
-    let quantity =req.params.quantity;
+    let productId = req.body.productId;
+    let quantity =req.body.quantity;
     console.log(quantity);
     let userData = req.session.user;
     let userId = userData._id;
-    let product = await productModel.findOne({_id : id})
+    let product = await productModel.findOne({_id : productId})
     let price = product.price;
 
    
-    console.log(id);
+    
     await cartModel
-      .findOneAndUpdate({ userId }, { $pull: { products : { productId: id }}, $inc : {cartTotal: - price*quantity} })
+      .findOneAndUpdate({ userId }, { $pull: { products : { productId }}, $inc : {cartTotal: - price*quantity} })
       .then(() => {
-        res.redirect("/cart");
+        res.json({status : true});
       })
       
   },
@@ -267,14 +269,15 @@ module.exports = {
   },
 
   deleteWishlist: async (req, res) => {
-    let id = req.params.id;
+    let id = req.body.productId;
     let userData = req.session.user;
     let userId = userData._id;
     console.log(id);
     await wishlistModel
       .findOneAndUpdate({ userId }, { $pull: { productId: id } })
       .then(() => {
-        res.redirect("/wishlist");
+        // res.redirect("/wishlist");
+        res.json({status: true})
       });
   },
 
@@ -286,21 +289,16 @@ module.exports = {
     let address = await addressModel.findOne({ userId: userId })
     
     if ( address) {
-      let address1= address.address[0];
-      let address2= address.address[1];
-      if (req.session.userLogin) {
-        res.render("user/profile", { user, category,address, address1, address2, login: true });
-      } else {
-        res.render("user/profile", { user, category,address, address1, address2, login: false });
-      }
+     
+     
+        res.render("user/profile", { user, category,address,  login: true });
+     
 
   } else {
-    if (req.session.userLogin) {
+    
       res.render("user/profile", { user, category,address, login: true });
-    } else {
-      res.render("user/profile", { user, category, address,  login: false });
-    }
   }
+  
   },
 
   changeCartQuantity: async (req, res) => {
@@ -377,8 +375,7 @@ module.exports = {
     let user = await userModel.findOne({ _id: userId });
     let address = await addressModel.findOne({ userId: userId })
     
-    let address1= address.address[0];
-    let address2= address.address[1];
+  
 
     let list = await cartModel
     .findOne({ userId: userId })
@@ -389,10 +386,14 @@ module.exports = {
   let totalAmount = list.cartTotal;
   let cartProducts = list.products;
 
-
+  if(address) {
+    let address1= address.address[addressIndex];
     
-      res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false, category,address1,address2, login: true });
-    
+      res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false, noAddress : false,category,address1,address, login: true });
+    } else {
+      
+      res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false,noAddress: true,address, category, login: true });
+    } 
      
   },
 
@@ -568,7 +569,7 @@ module.exports = {
         
         
             
-              res.render("user/checkout", { totalAmount,user,cartProducts, newAddress: true, category,address1,address2, login: true });
+              res.render("user/checkout", { totalAmount,user,cartProducts, address,noAddress:  false, newAddress: true, category,address1,address2, login: true });
             
         })
     }
@@ -601,7 +602,7 @@ module.exports = {
           
           
               
-                res.render("user/checkout", { totalAmount,user,cartProducts, category,address1,address2, login: true });
+                res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false,address,noAddress:false, category,address1,address2, login: true });
               
               
             })
@@ -612,5 +613,24 @@ module.exports = {
     }
 
 
+  },
+
+  changeAddressIndex : (req, res) => {
+     addressIndex = req.body.index;
+
+     res.json({status: true})
+  },
+
+  removeAddress : async(req ,res) => {
+    let addressId = req.body.addressId
+    let userData = req.session.user;
+    let userId = userData._id;
+
+
+    await addressModel.findOneAndUpdate({ userId }, { $pull: { address: { _id: addressId } } }).then(() => {
+      res.json({status:true})
+    })
   }
+
+
 };

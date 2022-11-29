@@ -14,6 +14,7 @@ router.get('/addCategory' ,controller.adminSession, controller.addCategory)
 router.get('/adminLogout',controller.adminLogout)
 router.get('/artSupplies', controller.adminSession,controller.artSupplyPage)
 router.get('/addArtSupply',controller.addArtSupplies)
+router.get('/adminOrders', controller.adminOrders)
 
 // post method
 router.post('/adminLogin', controller.loginAdmin)

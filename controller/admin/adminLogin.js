@@ -1,7 +1,7 @@
 const productModel = require("../../model/productModel");
 const categoryModel = require("../../model/categoryModel")
 const userModel = require("../../model/user/signupModel");
-
+const orderModel = require("../../model/orderModel")
 
 
 module.exports = {
@@ -268,6 +268,13 @@ module.exports = {
             })
 
         },
+
+
+        adminOrders :async (req , res) => {
+          const orders =  await orderModel.find().sort({date:-1}).populate('products.productId')
+          res.render('admin/adminOrders' ,{orders})
+        
+        }
 
 
 

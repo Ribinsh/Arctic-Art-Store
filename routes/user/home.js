@@ -10,8 +10,8 @@ router.get('/wishlist',controller.userSession, controller.wishlist)
 router.get('/products',controller.userSession, controller.products)
 router.get('/about',controller.aboutPage )
 router.get('/single/:id',controller.userSession, controller.single)
-router.get('/deleteCart/:id/:quantity',controller.userSession, controller.deleteCart)
-router.get('/deleteWishlist/:id', controller.deleteWishlist)
+router.post('/deleteCart',controller.userSession, controller.deleteCart)
+router.post('/deleteWishlist', controller.deleteWishlist)
 router.get('/profilePage',controller.userSession,controller.profilePage)
 
 router.get('/addAddressPage',controller.addAddressPage)
@@ -30,4 +30,6 @@ router.post('/addToWishlist/:id',controller.userSession , controller.addToWishli
 router.post('/change-quantity' ,controller.changeCartQuantity)
 router.post('/newAddress', controller.newAddress)
 router.post('/newDeliveryAddress', controller.newDeliveryAddress)
+router.post("/changeAddress", controller.changeAddressIndex)
+router.post("/removeAddress", controller.removeAddress)
 module.exports = router;

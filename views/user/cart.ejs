@@ -20,9 +20,9 @@
      <script src="/js/home/modernizr-2.6.2.min.js"></script>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      </head> 
-  <body> 
+  <body id="cart"> 
     
     <%- include ('nav.ejs') %>
 
@@ -85,7 +85,8 @@
                         </td>
                         
                         <td class="text-right font-weight-semibold align-middle p-4" id="total<%= product.productId._id %>" >Rs.<%=  product.total %></td>
-                        <td class="text-center align-middle px-0"><a href="/deleteCart/<%= product.productId._id %>/<%= product.quantity %>" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove">×</a></td>
+                        <td class="text-center align-middle px-0"><button class="shop-tooltip close float-none text-danger" onclick="deleteCart('<%= product.productId._id %>')">×</button></td>
+                        <!-- <td class="text-center align-middle px-0"><a href="/deleteCart//<%= product.quantity %>" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove">×</a></td> -->
                       </tr>
                     <% }) %>
                     
@@ -170,6 +171,38 @@
       })
   }
 
+  function deleteCart(productId){
+    quantity = parseInt(document.getElementById(productId).innerHTML)
+    Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    $.ajax({
+      url: "/deleteCart",
+      data :{
+        productId,
+        quantity
+      },
+      method : "post",
+
+      success: (response) => {
+        
+        location.href = "/cart"
+      
+      }
+    })
+  
+  }
+})
+  }
+
+   
  
 
   </script>
