@@ -59,9 +59,6 @@
                                 <span  style="color:red;"><%=product.productId.productName %> </span>
                                 <br> 
                                 <span class=" text-large">Category:<%=product.productId.category %></span>
-                               
-                                
-                                
                               
                             </div>
                           </div>
@@ -99,12 +96,13 @@
                 <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
                   <div class="mt-4">
                     <label class="text-muted font-weight-normal">Promocode</label>
-                    <input type="text" placeholder="ABC" class="form-control">
+                   <span> <input type="text" id="coupon" placeholder="ABC" class="form-control"> 
+                    <button class="btn btn-info"   onclick="applyCoupon('<%= cartId %>')" id="couponButton" id="couponButton" >Apply coupon</button></span>
                   </div>
                   <div class="d-flex">
                     <div class="text-right mt-4 mr-5">
                       <label class="text-muted font-weight-normal m-0">Discount</label>
-                      <div class="text-large"><strong>Rs.0</strong></div>
+                      <div class="text-large"><strong id="discount">Rs.0</strong></div>
                     </div>
                     <div class="text-right mt-4">
                       <label class="text-muted font-weight-normal m-0" >Total price</label>
@@ -164,7 +162,7 @@
                   } else {
                       document.getElementById("disable"+productId).disabled = false;
                   }
-              document.getElementById('subtotal').innerHTML =response.sumTotal
+              document.getElementById('subtotal').innerHTML ="Rs."+response.sumTotal
              
            }
           }
@@ -200,6 +198,48 @@
   
   }
 })
+  }
+
+  function applyCoupon (cartId) {
+    couponCode =document.getElementById('coupon').value
+
+    $.ajax({
+      url: "/applyCoupon",
+      data: {
+           cartId,
+           couponCode
+      },
+      method : "post",
+      success : (response) => {
+        if(response.couponSuccess){
+          document.getElementById('subtotal').innerHTML ="Rs."+response.sumTotal
+          document.getElementById('discount').innerHTML ="Rs."+response.discount
+          document.getElementById("couponButton").disabled = false;
+          Swal.fire({
+					   
+						 
+             icon: 'success',
+             text: 'Discount' + response.discount,
+             title: 'coupon applied',
+             showConfirmButton: false,
+             timer: 1500
+              })
+            } else if(response.status){
+          Swal.fire({
+                    icon: "error",
+                    title: "Add more items",
+                    text: "The minimum bill amount is "+ response.minAmount,
+        })
+      
+    }else{
+        Swal.fire({
+                  icon: "error",
+                  title: "oops...",
+                  text: "No Coupon Exist"
+        })
+      }
+      }
+    })
   }
 
    

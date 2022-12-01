@@ -13,7 +13,11 @@ const orderSchema = new mongoose.Schema ({
                 ref: 'Product'
             },
             quantity: {type: Number},
-            total : { type: Number} 
+            total : { type: Number} ,
+            orderStatus : {
+                type : String,
+                default : 'Order Placed'
+            },
     }],
     total : {
         type: Number,
@@ -26,12 +30,9 @@ const orderSchema = new mongoose.Schema ({
     },
     paymentMethod : {
         type: String,
-        default: "Pending"
+        default: "Cash on delivery"
     },
-    orderStatus : {
-        type : String,
-        default : 'Order placed'
-    },
+    
     date : {
         type: Date ,
         default : Date.now()

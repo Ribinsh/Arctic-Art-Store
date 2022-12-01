@@ -15,6 +15,9 @@ router.get('/adminLogout',controller.adminLogout)
 router.get('/artSupplies', controller.adminSession,controller.artSupplyPage)
 router.get('/addArtSupply',controller.addArtSupplies)
 router.get('/adminOrders', controller.adminOrders)
+router.get('/bannerPage',controller.bannerPage)
+router.get('/couponPage' , controller.couponPage)
+
 
 // post method
 router.post('/adminLogin', controller.loginAdmin)
@@ -29,7 +32,9 @@ router.post('/unlistSupplies/:id', controller.unlistSupplies)
 router.post('/editProduct/:id', controller.editProductPage)
 router.post('/updateProduct/:id',controller.updateProduct)
 router.post('/newArtSupply', controller.newArtSupply)
-
-
+router.post('/addCoupon',controller.addCoupon)
+router.post('/newBanner', controller.newBanner)
+router.post('/changeOrderStatus', controller.editOrderStatus)
+router.get('/invoicePage/:orderId/:productId',controller.invoice)
 
 module.exports = router;

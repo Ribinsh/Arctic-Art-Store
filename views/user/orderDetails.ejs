@@ -1,8 +1,34 @@
-<%- include ('userHeader.ejs') %>
+
+<html lang="en">
+    <head >
+        <title style="color: brown">Arctic</title>
+        <meta name="author" content="Zaur">
+        <meta descryption content="Presentation of website">
+        <meta name="keywords" content="technology, cyber security, software">
+        <meta http-equiv="refresh" content="100">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/stylesheets/home/animate.css">
+        
+	
+
+        <link rel="stylesheet" href="/public/stylesheets/cart.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'> 
+     
+     <script src="/js/home/modernizr-2.6.2.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     </head> 
+  <body id="cart"> 
+    
 
 <%- include ('nav.ejs') %>
 
-<div class="card">
+<div class="card container">
     <h5 class="card-header" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ; font-size:30px;">All Orders</h5>
     <div class="table-responsive text-nowrap">
         <table class="table">
@@ -26,7 +52,61 @@
                     <td style="font-size: large; color:black ;"><%= x.productId.category %></td>
                     <td><%= x.quantity %></td>
                     <td><strong><%= x.total %></strong></td>
-                    <td style="color:red ;"><%= product.orderStatus %> </td>
+                    
+
+                    <td>
+                        <% if(x.orderStatus==='Order Placed'){ %>
+                            <button
+                              class="btn btn-outline-dark "
+                              style="width: 165px"
+                              type="button"
+                              
+                              aria-expanded="false"
+                            >
+                              <%= x.orderStatus %>
+                            </button>
+                            <% } else if(x.orderStatus==='Shipped'){ %>
+                            <button
+                              class="btn btn-outline-primary "
+                              style="width: 165px"
+                              type="button"
+                              
+                              aria-expanded="false"
+                            >
+                              <%= x.orderStatus %>
+                            </button>
+                            <% } else if(x.orderStatus==='Out For Delivery'){ %>
+                            <button
+                              class="btn btn-outline-info "
+                              style="width: 165px"
+                              type="button"
+                              
+                              aria-expanded="false"
+                            >
+                              <%=x.orderStatus %>
+                            </button>
+                            <% } else if(x.orderStatus==='Delivered'){ %>
+                            <button
+                              class="btn btn-outline-success "
+                              style="width: 165px"
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <%= x.orderStatus %>
+                            </button>
+                            <% } else if(x.orderStatus==='Canceled'){ %>
+                            <button
+                              class="btn btn-outline-danger "
+                              style="width: 165px"
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <%= x.orderStatus %>
+                            </button>
+                            <% } %>
+                    </td>
                     <td>Cash on delivery</td>
                 </tr>
                 <% }) %>

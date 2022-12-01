@@ -5,6 +5,8 @@ const cartModel = require("../../model/cartModel");
 const wishlistModel = require("../../model/wishlistModel");
 const addressModel = require( '../../model/addressModel')
 const orderModel = require("../../model/orderModel")
+const bannerModel = require("../../model/bannerModel")
+const couponModel = require("../../model/couponModel")
 const { param } = require("../../routes/user/home");
 
 let addressIndex = 0;
@@ -26,32 +28,31 @@ module.exports = {
   },
   home: async (req, res) => {
     let category = await categoryModel.find();
+    let banner = await bannerModel.find();
     let supplies = await productModel.find({ category: "Art supplies" });
     if (req.session.userLogin) {
-      res.render("user/home", { category, login: true, supplies });
+      res.render("user/home", { category, login: true, supplies, banner });
     } else {
-      res.render("user/home", { category, login: false, supplies });
+      res.render("user/home", { category, login: false, supplies, banner });
     }
   },
+
+
   aboutPage: async (req, res) => {
     let category = await categoryModel.find();
 
-    if (req.session.userLogin) {
+    
       res.render("user/about", { category, login: true });
-    } else {
-      res.render("user/about", { category, login: false });
-    }
+   
   },
 
   products: async (req, res) => {
     let products = await productModel.find();
     let category = await categoryModel.find();
     // res.render('user/products', {products, category})
-    if (req.session.userLogin) {
+   
       res.render("user/products", { products, category, login: true });
-    } else {
-      res.render("user/products", { products, category, login: false });
-    }
+   
   },
   single: async (req, res) => {
     let id = req.params.id;
@@ -414,7 +415,7 @@ module.exports = {
       total,
       address,
       paymentMethod,
-      orderStatus : "Order Placed"
+      
     })
     newOrder.save()
     .then(async() =>{
@@ -629,6 +630,43 @@ module.exports = {
 
     await addressModel.findOneAndUpdate({ userId }, { $pull: { address: { _id: addressId } } }).then(() => {
       res.json({status:true})
+    })
+  },
+
+  couponApply : async (req , res) => {
+    console.log(req.body);
+    const {cartId, couponCode} = req.body
+    
+
+    await couponModel.findOne({couponName:couponCode}).then(async(coupon) =>{
+    
+    if(coupon != null){
+      console.log(" hi its coupon");
+      let cart =await cartModel.findOne({_id: cartId});
+      const discount = coupon.discount
+      const minAmount =  coupon.minAmount
+      console.log("coupon" + coupon)
+      console.log("min" +minAmount);
+      console.log("total"+ cart.cartTotal)
+      if(cart.cartTotal >= minAmount) {
+        console.log('SUCCESS 5000');
+        await cartModel.findByIdAndUpdate({_id:cartId},{$inc : {cartTotal:-discount}})
+        .then(async() =>{
+          let money = await cartModel.findOne({_id:cartId})
+            let sumTotal = money.cartTotal;
+          res.json({couponSuccess:true,discount,sumTotal})
+        })
+      } else {
+        console.log('CART AMOUNT LESS THAN 5000');
+        res.json({status:true,minAmount})
+      } 
+    }else {
+      console.log('NO COUPON');
+      res.json({status:false})
+    }
+      
+    
+    
     })
   }
 

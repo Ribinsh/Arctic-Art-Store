@@ -32,4 +32,5 @@ router.post('/newAddress', controller.newAddress)
 router.post('/newDeliveryAddress', controller.newDeliveryAddress)
 router.post("/changeAddress", controller.changeAddressIndex)
 router.post("/removeAddress", controller.removeAddress)
+router.post('/applyCoupon', controller.couponApply)
 module.exports = router;

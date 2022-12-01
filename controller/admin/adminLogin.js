@@ -2,8 +2,11 @@ const productModel = require("../../model/productModel");
 const categoryModel = require("../../model/categoryModel")
 const userModel = require("../../model/user/signupModel");
 const orderModel = require("../../model/orderModel")
-
-
+const bannerModel = require("../../model/bannerModel")
+const couponModel = require("../../model/couponModel");
+const cartModel = require("../../model/cartModel");
+const addressModel = require('../../model/addressModel')
+const moment = require ("moment")
 module.exports = {
     adminSession: (req , res ,next) => {
         if (req.session.adminLogin) {
@@ -52,9 +55,17 @@ module.exports = {
         },
 
         productList: async (req, res) => {
-            let products = await productModel.find();
-            res.render('admin/adminProduct', {products})
+        const page = parseInt(req.query.page) || 1;
+        const items_per_page = 8;
+        const totalproducts = await productModel.find().countDocuments()
+            let products = await productModel.find().skip((page - 1) * items_per_page).limit(items_per_page)
+            res.render('admin/adminProduct', {products ,page,
+                hasNextPage: items_per_page * page < totalproducts,
+                hasPreviousPage: page > 1,
+                PreviousPage: page - 1,})
         },
+
+
 
         addProduct: async (req, res) => {
             let category = await categoryModel.find();
@@ -126,7 +137,7 @@ module.exports = {
             .save()
             .then(() => {
                 console.log(" new category added ");
-                res.redirect("admin/categories")
+                res.redirect("/admin/categories")
             })
             .catch((err) => {
                 console.log(err.message);
@@ -274,7 +285,94 @@ module.exports = {
           const orders =  await orderModel.find().sort({date:-1}).populate('products.productId')
           res.render('admin/adminOrders' ,{orders})
         
-        }
+        },
+
+        bannerPage :async (req,res) => {
+            let category = await categoryModel.find()
+            let banner = await bannerModel.find()
+            res.render("admin/banner", {category,banner})
+        },
+
+        newBanner :async (req, res) => {
+            console.log(req.body)
+            const {title, description, category} = req.body;
+            const image = req.file
+            console.log(image);
+
+            const newBanner = bannerModel({
+                title,
+                description,
+                category,
+                imageUrl: image.filename
+
+
+            });
+
+            await newBanner
+            .save()
+            .then(() => {
+                console.log(" Banner Added ");
+                res.redirect("/admin/bannerPage")
+            })
+            .catch((err) => {
+                console.log(err.message);
+                res.redirect("/admin/bannerPage")
+            });
+        },
+        couponPage : async (req, res) => {
+            const coupon = await couponModel.find();
+            res.render("admin/coupon", {coupon})
+        },
+
+        addCoupon : async(req,res) => {
+            console.log(req.body)
+            const {couponName, discount, minAmount} = req.body;
+           
+            const newCoupon = couponModel({
+                couponName,
+                discount,
+                minAmount
+
+            });
+
+            await newCoupon
+            .save()
+            .then(() => {
+                console.log(" Coupon Added ");
+                res.redirect("/admin/couponPage")
+            })
+            .catch((err) => {
+                console.log(err.message);
+                res.redirect("/admin/couponPage")
+            });
+
+        },
+
+        editOrderStatus: async (req, res) => {
+            const productId = req.body.proId;
+            const orderId = req.body.orderId;
+            const status = req.body.status;
+            console.log(productId + "////" + orderId + "////" + status);
+           
+            
+            await orderModel.updateOne(
+              { _id: orderId, "products._id": productId },
+              { $set: { "products.$.orderStatus": status } }
+            ).then(() =>{
+            res.json({statusChanged: true})
+            })
+          },
+
+          invoice : async(req , res) => {
+            const productId = req.params.orderId
+            const orderId = req.params.productId
+            const addresses = await addressModel.find()
+            const orders =  await orderModel.findOne({_id : orderId }).populate('products.productId')
+            const address =  await orderModel.findOne({_id : orderId }).populate('address')
+            console.log(address);
+            
+            res.render('admin/invoice',{orders, moment})
+          }
 
 
 
