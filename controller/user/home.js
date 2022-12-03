@@ -30,10 +30,15 @@ module.exports = {
     let category = await categoryModel.find();
     let banner = await bannerModel.find();
     let supplies = await productModel.find({ category: "Art supplies" });
+    let allProducts = await productModel.find({}).countDocuments()
+    let activeUsers = await userModel.find({}).countDocuments()
+    let allCategories = await categoryModel.find().countDocuments()
+    let allSales = await orderModel.find().countDocuments()
+   
     if (req.session.userLogin) {
-      res.render("user/home", { category, login: true, supplies, banner });
+      res.render("user/home", { category, login: true, supplies, banner,allProducts,activeUsers,allCategories ,allSales});
     } else {
-      res.render("user/home", { category, login: false, supplies, banner });
+      res.render("user/home", { category, login: false, supplies, banner,allProducts,activeUsers,allCategories,allSales });
     }
   },
 
@@ -87,16 +92,20 @@ module.exports = {
     let cartExist = await cartModel.findOne({ userId: userId });
 
     if (cartExist) {
+      
         const productExist = await cartModel.findOne({userId ,  "products.productId": productId})
 
         if(productExist) {
+          if(product.category=== "Art supplies"){
             await cartModel.findOneAndUpdate({userId, "products.productId": productId}, {$inc :{"products.$.quantity": 1 , "products.$.total" : total, cartTotal : total }})
             .then((response) => {
-                console.log(" product added to cart successfully");
+                console.log(" product already exist in cart");
                 res.json({ status: true });
             })
+        }else{
+
         }
-        else {
+      }else {
       await cartModel
         .findOneAndUpdate(
           { userId: userId },
@@ -107,6 +116,7 @@ module.exports = {
           res.json({ status: true });
         });
         }
+     
     } else {
       const cartProduct = new cartModel({
         userId,
@@ -126,40 +136,7 @@ module.exports = {
     }
   },
 
-  // addToCartWishlist: async (req, res) => {
-  //   console.log(req.params.id);
-  //   let productId = req.params.id;
-  //   let userData = req.session.user;
-  //   let userId = userData._id;
-  //   let wishlist = await cartModel.findOne({ userId: userId });
-
-  //   if (wishlist) {
-  //     await cartModel
-  //       .findOneAndUpdate(
-  //         { userId: userId },
-  //         { $push: { products: { productId } } }
-  //       )
-  //       .then(() => {
-  //         console.log(" product added to cart successfully");
-  //         res.redirect("/products");
-  //       });
-  //   } else {
-  //     const cartProduct = new cartModel({
-  //       userId,
-  //       products: [{ productId }],
-  //     });
-  //     await cartProduct
-  //       .save()
-  //       .then(() => {
-  //         console.log(" product added to cart successfully");
-  //         res.redirect("/products");
-  //       })
-  //       .catch((err) => {
-  //         console.log(err.message);
-  //         res.redirect("/products");
-  //       });
-  //   }
-  // },
+ 
 
   cart: async (req, res) => {
     let userData = req.session.user;
@@ -175,7 +152,7 @@ module.exports = {
     if (list) {
       let cartProducts = list.products;
       let cartId = list._id;
-      // res.render('user/cart', {cartProducts,category, index:1})
+    
       
         res.render("user/cart", {
           cartId,
@@ -261,11 +238,11 @@ module.exports = {
     if (list) {
       let wish = list.productId;
       // res.render('user/wishlist', {wish,category, index:1})
-      if (req.session.userLogin) {
-        res.render("user/wishlist", { wish, category, index: 1, login: true });
+      
+        res.render("user/wishlist", { list, wish, category, index: 1, login: true });
       } else {
-        res.render("user/wishlist", { wish, category, index: 1, login: false });
-      }
+        res.render("user/wishlist", {list: null,  category, index: 1, login: false });
+      
     }
   },
 
@@ -386,28 +363,40 @@ module.exports = {
   console.log(list._id);
   let totalAmount = list.cartTotal;
   let cartProducts = list.products;
-
+  let offer = list.discount;
   if(address) {
     let address1= address.address[addressIndex];
     
-      res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false, noAddress : false,category,address1,address, login: true });
+      res.render("user/checkout", { totalAmount,offer,user,cartProducts,newAddress:false, noAddress : false,category,address1,address, login: true,addressIndex });
     } else {
       
-      res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false,noAddress: true,address, category, login: true });
+      res.render("user/checkout", { totalAmount,offer,user,cartProducts,newAddress:false,noAddress: true,address, category, login: true });
     } 
      
   },
 
   orderSuccess : async(req ,res) => {
-    let address = req.body.addressId
+    let addressindex = req.body.addressIndex
     let paymentMethod = req.body.paymentMethod
     // let addressData = await addressModel.findOne({address: address})    
     let userData = req.session.user;
     let userId = userData._id;
+    let profile = await addressModel.findOne({userId})
+    let address = profile.address[addressindex]
     let cart = await cartModel.findOne({ userId})
+    let product = await cartModel.findOne({ userId}).populate('products.productId');
     let total = cart.cartTotal
     let products = cart.products
-    
+    let discount = cart.discount
+
+
+    console.log(product);
+    product.products.forEach(async(item) => {
+      if(item.productId.category != "Art supplies") {
+        await productModel.findOneAndUpdate({_id : item.productId._id},{$set:{status:"Unlist"}})
+ }
+    }) 
+   
 
     const newOrder = new orderModel ({
       userId,
@@ -415,10 +404,12 @@ module.exports = {
       total,
       address,
       paymentMethod,
+      discount
       
     })
     newOrder.save()
     .then(async() =>{
+      
       await cartModel.findOneAndDelete ({_id: cart._id})
       let orderId = newOrder._id
       let total = cart.cartTotal
@@ -567,10 +558,10 @@ module.exports = {
           console.log(list._id);
           let totalAmount = list.cartTotal;
           let cartProducts = list.products;
-        
+          let offer = list.discount;
         
             
-              res.render("user/checkout", { totalAmount,user,cartProducts, address,noAddress:  false, newAddress: true, category,address1,address2, login: true });
+              res.render("user/checkout", { totalAmount,offer,user,cartProducts, address,noAddress:  false, newAddress: true, category,address1,address2, login: true ,addressIndex});
             
         })
     }
@@ -600,10 +591,10 @@ module.exports = {
             console.log(list._id);
             let totalAmount = list.cartTotal;
             let cartProducts = list.products;
-          
-          
+            let offer = list.discount;
+         
               
-                res.render("user/checkout", { totalAmount,user,cartProducts,newAddress:false,address,noAddress:false, category,address1,address2, login: true });
+                res.render("user/checkout", { totalAmount,offer,user,cartProducts,newAddress:false,address,noAddress:false, category,address1,address2, login: true,addressIndex });
               
               
             })
@@ -636,26 +627,28 @@ module.exports = {
   couponApply : async (req , res) => {
     console.log(req.body);
     const {cartId, couponCode} = req.body
-    
+    let cart = await cartModel.findOne({_id:cartId})
+    console.log(cart.discount);
+    if(cart.discount === 0){
 
-    await couponModel.findOne({couponName:couponCode}).then(async(coupon) =>{
+      await couponModel.findOne({couponName:couponCode}).then(async(coupon) =>{
     
-    if(coupon != null){
-      console.log(" hi its coupon");
-      let cart =await cartModel.findOne({_id: cartId});
-      const discount = coupon.discount
-      const minAmount =  coupon.minAmount
-      console.log("coupon" + coupon)
-      console.log("min" +minAmount);
-      console.log("total"+ cart.cartTotal)
-      if(cart.cartTotal >= minAmount) {
-        console.log('SUCCESS 5000');
-        await cartModel.findByIdAndUpdate({_id:cartId},{$inc : {cartTotal:-discount}})
-        .then(async() =>{
-          let money = await cartModel.findOne({_id:cartId})
-            let sumTotal = money.cartTotal;
-          res.json({couponSuccess:true,discount,sumTotal})
-        })
+      if(coupon != null){
+        console.log(" hi its coupon");
+        let cart =await cartModel.findOne({_id: cartId});
+        const discount = coupon.discount
+        const minAmount =  coupon.minAmount
+        console.log("coupon" + coupon)
+        console.log("min" +minAmount);
+        console.log("total"+ cart.cartTotal)
+        if(cart.cartTotal >= minAmount) {
+          console.log('SUCCESS 5000');
+          await cartModel.findByIdAndUpdate({_id:cartId},{$inc : {cartTotal:-discount, discount: discount}})
+          .then(async() =>{
+            let money = await cartModel.findOne({_id:cartId})
+              let sumTotal = money.cartTotal;
+            res.json({couponSuccess:true,discount,sumTotal})
+          })
       } else {
         console.log('CART AMOUNT LESS THAN 5000');
         res.json({status:true,minAmount})
@@ -668,6 +661,10 @@ module.exports = {
     
     
     })
+
+   } else {
+    res.json({couponApplied:true})
+   }
   }
 
 

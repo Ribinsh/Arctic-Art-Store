@@ -103,6 +103,7 @@
 						<div class="row">
 							<% products.forEach(function(product) { %>
 								<% if(category.categoryName===product.category ) { %>
+									<% if(product.status === 'List') { %>
 									<div class="col-md-4  text-center animate-box">
 										<div class="product">
 
@@ -133,7 +134,8 @@
 										</div>
 									</div>
 									<% } %>
-										<% }) %>
+								<% } %>
+							<% }) %>
 						</div>
 
 
@@ -249,7 +251,6 @@
 						if (response.status) {
 							Swal.fire({
                           
-							
                            icon: 'success',
 						   text: productName,
                            title: 'Item added to wishlist',

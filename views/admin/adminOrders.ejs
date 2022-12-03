@@ -355,7 +355,13 @@
                             </ul>
                           </div>
                     </td>
-                    <td>Cash on delivery</td>
+                    <td>
+                        <% if(product.paymentMethod === 'COD') { %>
+                            Cash on Delivery
+                       <% }else{  %>
+                        Paid
+                       <% } %>
+                    </td>
                     <td><a href="/admin/invoicePage/<%= x._id %>/<%= product._id %>"><button class="btn btn-outline-info" >Details</Details></button></a></td>
                 </tr>
                 <% }) %>

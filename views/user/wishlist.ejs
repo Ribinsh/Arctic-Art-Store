@@ -28,41 +28,51 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="main-heading mb-10">My wishlist</div>
-                <div class="table-wishlist" >
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th width="45%">Product Name</th>
-                                <th width="15%">Unit Price</th>
-                                <th width="15%">Stock Status</th>
-                                <th width="15%"></th>
-                                <th width="10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <% wish.forEach(function(product) { %> 
-                            <tr>
-                                <td width="45%">
-                                    <div class="display-flex align-center">
-                                        <div class="img-product">
-                                            <img src="/<%= product.imageUrl %>" alt="" class="mCS_img_loaded">
-                                        </div>
-                                        <div class="name-product">
-                                            <%= product.productName %>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td width="15%" class="price">Rs.<%= product.price %></td>
-                                <td width="15%"><span class="in-stock-box">In Stock</span></td>
-                                <td width="15%"><button onclick="addToCart('<%=product._id %>','<%=product.productName %>')" class="round-black-btn small-btn">Add to Cart</button></td>
-                                <!-- <td width="10%" class="text-center"><a href="/deleteWishlist/<%= product._id %>" id="sweet" class="trash-icon"><i class="bi bi-trash"></i></a></td> -->
-                                <td width="10%" class="text-center"><button class="btn" onclick="deleteWishlist('<%= product._id %>')"    class="trash-icon"><i class="bi bi-trash"></i></button></td>
-                            </tr>
-                          <%  }) %>
-                        </tbody>
-                    </table>
+                <div class="main-heading mb-10" style="background-color:grey ;">
+                    <h5 class="card-header" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ; font-size:30px;">My wishlist</h5>
                 </div>
+                <% if(list != null) { %>
+
+                    <div class="table-wishlist" >
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th width="45%">Product Name</th>
+                                    <th width="15%">Unit Price</th>
+                                    <th width="15%">Stock Status</th>
+                                    <th width="15%"></th>
+                                    <th width="10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% wish.forEach(function(product) { %> 
+                                <tr>
+                                    <td width="45%">
+                                        <div class="display-flex align-center">
+                                            <div class="img-product">
+                                                <img src="/<%= product.imageUrl %>" alt="" class="mCS_img_loaded">
+                                            </div>
+                                            <div class="name-product">
+                                                <%= product.productName %>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td width="15%" class="price">Rs.<%= product.price %></td>
+                                    <td width="15%"><span class="in-stock-box">In Stock</span></td>
+                                    <td width="15%"><button onclick="addToCart('<%=product._id %>','<%=product.productName %>')" class="round-black-btn small-btn">Add to Cart</button></td>
+                                    <!-- <td width="10%" class="text-center"><a href="/deleteWishlist/<%= product._id %>" id="sweet" class="trash-icon"><i class="bi bi-trash"></i></a></td> -->
+                                    <td width="10%" class="text-center"><button class="btn" onclick="deleteWishlist('<%= product._id %>')"    class="trash-icon"><i class="bi bi-trash"></i></button></td>
+                                </tr>
+                            <%  }) %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <% } else { %>
+                    <div class="d-flex justify-content-center align-items-center " style="height: 100vh;">
+                      <img src="https://static.oxinis.com/healthmug/image/healthmug/empty-wishlist.png" alt="empty-wishlist" style=" height:500px">
+    
+                    <% } %>
             </div>
         </div>
     </div>

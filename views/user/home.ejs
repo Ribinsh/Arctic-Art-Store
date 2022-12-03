@@ -1,5 +1,5 @@
 <%- include ('userHeader.ejs') %>
-	<!-- <div class="fh5co-loader"></div>
+	 <div class="fh5co-loader"></div>
 
 	<div id="page">
 		<nav class="fh5co-nav" role="navigation">
@@ -8,20 +8,22 @@
 
 
 					<div class="col-md-3 col-xs-2">
-						 <div style="width: 100px;">
+						 <!-- <div style="width: 100px;">
 						<img style="height:100px ; width: 100px;" src="/logo/bear.webp" alt="">
-					 </div> -->
-						<!-- <div id="fh5co-logo"><img style="height:70px ; width: 70px;" src="/images/logo.png" alt=""><a
+					 </div>  -->
+						 <!-- <div id="fh5co-logo"><img style="height:70px ; width: 70px;" src="/images/logo.png" alt=""><a
 								href="#">Arctic</a></div>
-					</div>
+					</div> -->
+					<div id="fh5co-logo"><a href="/"><img style="height:70px ;" src="/Images\nav-logo.jpeg" alt=""></a></div>
+            </div>
 					<div class="navs col-md-6 col-xs-6 text-center menu-1">
 						<ul>
 							<li class="has-dropdown">
 								<a href="/products">Shop</a>
 								 <ul class="dropdown">
-								<li><a href="single.html">Single Shop</a></li>
-							</ul> -->
-							<!-- </li>
+								
+							</ul> 
+							 </li>
 							<li><a href="/about">About</a></li>
 							<li class="has-dropdown">
 								<a href="">Categories</a>
@@ -39,16 +41,16 @@
 							<li><a href="/contact">Contact</a></li>
 							<li class="shopping-cart">
 								<a href="/cart" class="car">
-									<span>
-										<i class="icon-shopping-cart"></i>
-									</span>
+									
+										<i class="bi bi-bag-check-fill"></i>
+									
 								</a>
 							</li>
 							<li class="wishlist">
 								<a href="/wishlist" class="wish-list">
-									<span>
+									
 										<i class="bi bi-heart-fill"></i>
-									</span>
+									
 								</a>
 							</li>
 
@@ -90,8 +92,8 @@
 
 			</div>
 
-		</nav> --> 
-		<%- include ('nav.ejs') %>
+		</nav> 
+		
 
 		<aside id="fh5co-hero" class="js-fullheight">
 			<div class="flexslider js-fullheight">
@@ -234,7 +236,7 @@
 		</div>
 	<!-- </div> -->
 
-	<div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-image:url(\images/Arcti.png);">
+	<div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-image:url(/public/images/back.jpg);">
 		<div class="container">
 			<div class="row">
 				<div class="display-t">
@@ -245,9 +247,9 @@
 									<i class="icon-eye"></i>
 								</span>
 
-								<span class="counter js-counter" data-from="0" data-to="22070" data-speed="5000"
+								<span class="counter js-counter" data-from="0" data-to="<%= allProducts %>" data-speed="5000"
 									data-refresh-interval="50">1</span>
-								<span class="counter-label">Creativity Fuel</span>
+								<span class="counter-label">All Products</span>
 
 							</div>
 						</div>
@@ -257,7 +259,7 @@
 									<i class="icon-shopping-cart"></i>
 								</span>
 
-								<span class="counter js-counter" data-from="0" data-to="450" data-speed="5000"
+								<span class="counter js-counter" data-from="0" data-to="<%= activeUsers %>" data-speed="5000"
 									data-refresh-interval="50">1</span>
 								<span class="counter-label">Happy Clients</span>
 							</div>
@@ -267,9 +269,9 @@
 								<span class="icon">
 									<i class="icon-shop"></i>
 								</span>
-								<span class="counter js-counter" data-from="0" data-to="700" data-speed="5000"
+								<span class="counter js-counter" data-from="0" data-to="<%= allSales %>" data-speed="5000"
 									data-refresh-interval="50">1</span>
-								<span class="counter-label">All Products</span>
+								<span class="counter-label">Sales</span>
 							</div>
 						</div>
 						<div class="col-md-3 col-sm-6 animate-box">
@@ -278,9 +280,9 @@
 									<i class="icon-clock"></i>
 								</span>
 
-								<span class="counter js-counter" data-from="0" data-to="5605" data-speed="5000"
+								<span class="counter js-counter" data-from="0" data-to="<%= allCategories %>" data-speed="5000"
 									data-refresh-interval="50">1</span>
-								<span class="counter-label">Hours Spent</span>
+								<span class="counter-label">Categories</span>
 
 							</div>
 						</div>
@@ -367,6 +369,8 @@
 			<div class="row ">
 
 				<% supplies.forEach(function(product){ %>
+
+					<% if(product.status === 'List') { %> 
 					<div class="col-md-3  text-center animate-box">
 						<div class="product">
 
@@ -394,6 +398,7 @@
 							</div>
 						</div>
 					</div>
+					<%}%>
 					<% }) %>
 
 			</div>
@@ -459,63 +464,16 @@
 	</div>
 
 
-	<div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-image:url(images/img_bg_5.jpg);">
+	<div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-position: center; background-image:url(/public/images/that.jpg);">
 		<div class="container">
-			<div class="row">
-				<div class="display-t">
-					<div class="display-tc">
-						<div class="col-md-3 col-sm-6 animate-box">
-							<div class="feature-center">
-								<span class="icon">
-									<i class="icon-eye"></i>
-								</span>
-
-								<span class="counter js-counter" data-from="0" data-to="22070" data-speed="5000"
-									data-refresh-interval="50">1</span>
-								<span class="counter-label">Creativity Fuel</span>
-
-							</div>
-						</div>
-						<div class="col-md-3 col-sm-6 animate-box">
-							<div class="feature-center">
-								<span class="icon">
-									<i class="icon-shopping-cart"></i>
-								</span>
-
-								<span class="counter js-counter" data-from="0" data-to="450" data-speed="5000"
-									data-refresh-interval="50">1</span>
-								<span class="counter-label">Happy Clients</span>
-							</div>
-						</div>
-						<div class="col-md-3 col-sm-6 animate-box">
-							<div class="feature-center">
-								<span class="icon">
-									<i class="icon-shop"></i>
-								</span>
-								<span class="counter js-counter" data-from="0" data-to="700" data-speed="5000"
-									data-refresh-interval="50">1</span>
-								<span class="counter-label">All Products</span>
-							</div>
-						</div>
-						<div class="col-md-3 col-sm-6 animate-box">
-							<div class="feature-center">
-								<span class="icon">
-									<i class="icon-clock"></i>
-								</span>
-
-								<span class="counter js-counter" data-from="0" data-to="5605" data-speed="5000"
-									data-refresh-interval="50">1</span>
-								<span class="counter-label">Hours Spent</span>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<h1 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin-top: 100px;">We frame your dreams...</h1>
+			<h2 style="font-family: Verdana, Geneva, Tahoma, sans-serif; color:white ;">Sell your works here</h2>
+			<h3 style="color:RED ; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">COMING SOON</h3>
+			<button class="btn btn-dark">Join Us</button>
 		</div>
 	</div>
 
-	<div id="fh5co-started">
+	<!-- <div id="fh5co-started">
 		<div class="container">
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
@@ -539,13 +497,13 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<footer id="fh5co-footer" role="contentinfo">
 		<div class="container">
 			<div class="row row-pb-md">
 				<div class="col-md-4 fh5co-widget">
-					<h3>Shop.</h3>
+					<h3>Arctic.</h3>
 					<p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos
 						cumque dicta adipisci architecto culpa amet.</p>
 				</div>
@@ -631,7 +589,7 @@
 					   Swal.fire({
 					 icon: 'error',
 					 title: 'Oops...',
-					 text: 'Something went wrong!',
+					 text: 'Please login!',
 
 					 })
 				   }
@@ -662,7 +620,7 @@
 					Swal.fire({
 				  icon: 'error',
 				  title: 'Oops...',
-				  text: 'Something went wrong!',
+				  text: 'Please login!',
 
 				  })
 				}

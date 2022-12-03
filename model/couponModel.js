@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema;
-
+const ObjectId = mongoose.Schema.Types.ObjectId
 const couponSchema = new Schema({
     couponName: {
         type: String,
@@ -15,6 +15,7 @@ const couponSchema = new Schema({
     minAmount: {
         type: Number,
         required: true
-    }
+    },
+    
 })
 module.exports= Coupen = mongoose.model('coupen',couponSchema)

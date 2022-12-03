@@ -382,7 +382,7 @@
                   <% }) %>
                   <ul class="checkout__total__all">
                     <li>Subtotal <span>Rs.<%= totalAmount %></span></li>
-                    <li>Coupen Discount <span>0</span></li>
+                    <li>Coupon Discount <span><%= offer %></span></li>
                     <li>
                       Delivery charge
                       <span style="color: rgb(34, 228, 73)">Free</span>
@@ -436,7 +436,7 @@
                     <% if(!newAddress ) { %>
 
                   <button
-                    onclick="orderPlaced('<%= address1._id %>')"
+                    onclick="orderPlaced('<%= addressIndex %>')"
                     type="button"
                     class="site-btn"
                   >
@@ -445,7 +445,7 @@
                   <% } else { %>
 
                   <button
-                    onclick="orderPlaced('<%= address2._id %>')"
+                    onclick="orderPlaced('<%= addressIndex %>')"
                     type="button"
                     class="site-btn"
                   >
@@ -468,14 +468,14 @@
 
     <script>
       function orderPlaced(address) {
-        let addressId = address;
+        let addressIndex = parseInt( address)
         let payment_method = document.getElementById("razorpay").checked
           ? "ONLINE"
           : "COD";
         $.ajax({
           url: "/orderPlaced",
           data: {
-            addressId: addressId,
+            addressIndex: addressIndex,
             paymentMethod: payment_method,
           },
           method: "post",

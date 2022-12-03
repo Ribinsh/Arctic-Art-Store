@@ -64,7 +64,9 @@ app.use("/Images",express.static('Images'))
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/login', loginRouter);
-
+app.use("*",(req,res)=>{
+    res.render('err')
+  })
 
 
 

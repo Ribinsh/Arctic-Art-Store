@@ -37,20 +37,86 @@ module.exports = {
     },
 
 
-    loginAdmin: (req, res) => {
+    loginAdmin: async (req, res) => {
         let email = 'admin@gmail.com';
         let password = 'admin';
         console.log(req.body);
         if (req.body.password == password && req.body.email == email) {
             req.session.adminLogin = true;
-        
-            res.render('admin/adminHome')}
+
+           
+            let allProducts = await productModel.find({status:"List"}).countDocuments()
+            let activeUsers = await userModel.find({ status: "Unblocked" }).countDocuments()
+            let liveOrders = await orderModel.find({ orderStatus: { $nin: ["Delivered", "Cancelled"] } }).countDocuments()
+            let newOrders = await orderModel.find().sort({ orderDate: -1 }).limit(8)
+            let newUsers = await userModel.find({ type: "Active" }).sort({ join: -1 }).limit(5)
+
+            let start = new Date();
+            start.setHours(0, 0, 0, 0);
+            let end = new Date();
+            end.setHours(23, 59, 59, 999);
+            let ordersToday = await orderModel.find({orderDate: {$gte: start, $lt: end}}).countDocuments()
+
+            let online = await orderModel.aggregate([
+                { '$match': { paymentMethod: 'ONLINE'} },
+                { '$group': { '_id': null, 'subTotal': { '$sum': '$total' } } }
+            ])
+
+
+            let sales = await orderModel.aggregate([
+                {
+                    '$group': {
+                        '_id': null,
+                        'totalCount': {
+                            '$sum': '$total'
+                        }
+                    }
+                }
+            ])
+
+          console.log(online);
+          const totalSales = sales.map(a => a.totalCount)
+          const onlinePayments = online.map(a => a.subTotal)
+            res.render('admin/adminHome',{allProducts,ordersToday,liveOrders,newOrders,activeUsers,newUsers,totalSales,onlinePayments})}
             else{
                 res.redirect('/admin')
             }
         },
-        dashboard : (req, res) => {
-             res.render('admin/adminHome')
+        dashboard : async (req, res) => {
+
+            let allProducts = await productModel.find({status:"List"}).countDocuments()
+            let activeUsers = await userModel.find({ status: "Unblocked" }).countDocuments()
+            let liveOrders = await orderModel.find({ orderStatus: { $nin: ["Delivered", "Cancelled"] } }).countDocuments()
+            let newOrders = await orderModel.find().sort({ orderDate: -1 }).limit(8)
+            let newUsers = await userModel.find({ type: "Active" }).sort({ join: -1 }).limit(5)
+
+            let start = new Date();
+            start.setHours(0, 0, 0, 0);
+            let end = new Date();
+            end.setHours(23, 59, 59, 999);
+            let ordersToday = await orderModel.find({orderDate: {$gte: start, $lt: end}}).countDocuments()
+
+            let online = await orderModel.aggregate([
+                { '$match': { paymentMethod: 'ONLINE'} },
+                { '$group': { '_id': null, 'subTotal': { '$sum': '$total' } } }
+            ])
+
+
+            let sales = await orderModel.aggregate([
+                {
+                    '$group': {
+                        '_id': null,
+                        'totalCount': {
+                            '$sum': '$total'
+                        }
+                    }
+                }
+            ])
+
+          console.log(online);
+          const totalSales = sales.map(a => a.totalCount)
+          const onlinePayments = online.map(a => a.subTotal)
+             res.render('admin/adminHome',{allProducts,ordersToday,liveOrders,newOrders,activeUsers,newUsers,totalSales,onlinePayments})
 
         },
 
@@ -228,7 +294,7 @@ module.exports = {
          artSupplyPage : async(req,res) => {
 
             let products = await productModel.find({category:"Art supplies"});
-            res.render('admin/adminProduct', {products})
+            res.render('admin/artSupplies', {products})
          },
 
          addArtSupplies : (req,res) => {
@@ -321,7 +387,11 @@ module.exports = {
         },
         couponPage : async (req, res) => {
             const coupon = await couponModel.find();
+            if(coupon){
+                res.render("admin/coupon", {coupon})
+            }else {
             res.render("admin/coupon", {coupon})
+            }
         },
 
         addCoupon : async(req,res) => {
@@ -366,10 +436,10 @@ module.exports = {
           invoice : async(req , res) => {
             const productId = req.params.orderId
             const orderId = req.params.productId
-            const addresses = await addressModel.find()
+            
             const orders =  await orderModel.findOne({_id : orderId }).populate('products.productId')
-            const address =  await orderModel.findOne({_id : orderId }).populate('address')
-            console.log(address);
+            
+           
             
             res.render('admin/invoice',{orders, moment})
           }

@@ -123,7 +123,7 @@
           </ul> 
         </li>
       </ul>
-    </aside> 
+    </aside> -
     <!-- / Menu -->
 
     <!-- Layout container -->
@@ -249,11 +249,11 @@
                         <div class="card-body">
                           <h5 class="card-title text-primary">Congratulations Ribin 🎉</h5>
                           <p class="mb-4">
-                            You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
+                            You have  <span class="fw-bold"><%= ordersToday %></span> more orders today. Check your new orders in
                             your profile.
                           </p>
 
-                          <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
+                          <a href="/admin/adminOrders" class="btn btn-sm btn-outline-primary">View orders</a>
                         </div>
                       </div>
                       <div class="col-sm-5 text-center text-sm-left">
@@ -300,9 +300,9 @@
                               </div>
                             </div>
                           </div>
-                          <span class="fw-semibold d-block mb-1">Profit</span>
-                          <h3 class="card-title mb-2">$12,628</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                          <span class="fw-semibold d-block mb-1">Users</span>
+                          <h3 class="card-title mb-2"><%= activeUsers %></h3>
+                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i></small>
                         </div>
                       </div>
                     </div>
@@ -335,8 +335,8 @@
                             </div>
                           </div>
                           <span>Sales</span>
-                          <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+                          <h3 class="card-title text-nowrap mb-1"><%= totalSales %></h3>
+                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i></small>
                         </div>
                       </div>
                     </div>
@@ -426,9 +426,9 @@
                               </div>
                             </div>
                           </div>
-                          <span class="d-block mb-1">Payments</span>
-                          <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                          <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+                          <span class="d-block mb-1">Products</span>
+                          <h3 class="card-title text-nowrap mb-2"><%= allProducts %></h3>
+                          <small class="text-danger fw-semibold"> </small>
                         </div>
                       </div>
                     </div>
@@ -457,8 +457,8 @@
                             </div>
                           </div>
                           <span class="fw-semibold d-block mb-1">Transactions</span>
-                          <h3 class="card-title mb-2">$14,857</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
+                          <h3 class="card-title mb-2">Rs.<%= onlinePayments %></h3>
+                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +</small>
                         </div>
                       </div>
                     </div>
@@ -490,7 +490,7 @@
               </div>
               <div class="row">
                 <!-- Order Statistics -->
-                <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+                <!-- <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between pb-0">
                       <div class="card-title mb-0">
@@ -587,7 +587,7 @@
                       </ul>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <!--/ Order Statistics -->
 
                 <!-- Expense Overview -->
@@ -652,7 +652,7 @@
                 <!--/ Expense Overview -->
 
                 <!-- Transactions -->
-                <div class="col-md-6 col-lg-4 order-2 mb-4">
+                <!-- <div class="col-md-6 col-lg-4 order-2 mb-4">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <h5 class="card-title m-0 me-2">Transactions</h5>
@@ -769,7 +769,7 @@
                       </ul>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <!--/ Transactions -->
               </div>
             </div>

@@ -66,19 +66,24 @@
                         <td class="text-right font-weight-semibold align-middle p-4" >Rs.<%= product.productId.price %></td>
 
                         <td class="align-middle p-4" class="form-control text-center" >
+
+                          <% if(product.productId.category === "Art supplies") { %>
+                            <button
+                            class=" button-minus border rounded-circle icon-shape icon-sm cart-item-count mr-3"
+                            onclick="changeQuantity('<%= cartId %>','<%= product.productId._id %>','<%= product.productId.price %>',-1)"
+                            id="disable<%= product.productId._id %>" disabled="false">-</button>
+  
+                        <span id= '<%= product.productId._id %>'><%= product.quantity %></span>
+  
+                        <button
+                            class="button-minus border rounded-circle icon-shape icon-sm cart-item-count mr-3"
+  
+                            onclick="changeQuantity('<%= cartId %>','<%= product.productId._id %>','<%= product.productId.price %>',1)">+</button>
+                          <% }else{ %> 
                         
-                          <button
-                          class=" button-minus border rounded-circle icon-shape icon-sm cart-item-count mr-3"
-                          onclick="changeQuantity('<%= cartId %>','<%= product.productId._id %>','<%= product.productId.price %>',-1)"
-                          id="disable<%= product.productId._id %>" disabled="false">-</button>
-
-                      <span id= '<%= product.productId._id %>'><%= product.quantity %></span>
-
-                      <button
-                          class="button-minus border rounded-circle icon-shape icon-sm cart-item-count mr-3"
-
-                          onclick="changeQuantity('<%= cartId %>','<%= product.productId._id %>','<%= product.productId.price %>',1)">+</button>
-                          
+                            <span id= '<%= product.productId._id %>' class="btn btn-outline-info">1 </span>
+                        
+                          <% } %>
                         </td>
                         
                         <td class="text-right font-weight-semibold align-middle p-4" id="total<%= product.productId._id %>" >Rs.<%=  product.total %></td>
@@ -230,6 +235,14 @@
                     title: "Add more items",
                     text: "The minimum bill amount is "+ response.minAmount,
         })
+
+      }else if(response.couponApplied) {
+        Swal.fire({
+                  icon: "error",
+                  title: "Oops..",
+                  text: "Coupon already applied"
+        })
+      
       
     }else{
         Swal.fire({

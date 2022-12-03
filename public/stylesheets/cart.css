@@ -226,7 +226,7 @@ body{
     border: 1px solid red;
     width: 100%;
   }
-  .fh5co-nav-toggle {
+  .fh5co-nav-toggle { 
     width: 25px;
     height: 25px;
     cursor: pointer;
@@ -335,4 +335,6 @@ body{
     .fh5co-nav-toggle {
       display: block;
     }
-  }
+  } 
+
+  

@@ -24,9 +24,9 @@ const orderSchema = new mongoose.Schema ({
         required:true
     },
     address : {
-        type: ObjectId,
+        type: Object,
         required: true,
-        ref : 'userAddress'
+       
     },
     paymentMethod : {
         type: String,
@@ -36,6 +36,10 @@ const orderSchema = new mongoose.Schema ({
     date : {
         type: Date ,
         default : Date.now()
+    },
+    discount : {
+        type : Number,
+        default : 0
     }
 
 })

@@ -18,6 +18,10 @@ const cartSchema = new mongoose.Schema({
         cartTotal : {
             type: Number,
             default: 0                
+        },
+        discount : {
+            type: Number,
+            default: 0
         }
 })
 

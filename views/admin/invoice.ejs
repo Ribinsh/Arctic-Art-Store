@@ -41,9 +41,9 @@
             <div class="tm_invoice_left">
               <p class="tm_mb2"><b class="tm_primary_color">Invoice To:</b></p>
               <p>
-                Ribinsh p <br>
-                Peravanthodi House, Kizhisseri <br>Kerala<br>
-                ribinshp7@gmail.com <br> 8714350500
+                <%= orders.address.fullName %> <br>
+                <%= orders.address.houseName %>,<%= orders.address.city %> <br><%= orders.address.state %><br>
+                <br><%= orders.address.phone %>
               </p>
             </div>
             <div class="tm_invoice_right tm_text_right">
