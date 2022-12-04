@@ -250,7 +250,10 @@
             </thead>
             <tbody class="table-border-bottom-0">
              <% orders.forEach(function(product){ %>    
+
                 <% product.products.forEach(function(x){ %>
+
+                    <% console.log(x) %>
                 <tr>
                     <td><img src="/<%= x.productId.imageUrl %>" alt="" style="height: 60px; width:60px ;"></td>
                     <td><%= x.productId.productName %></td>
